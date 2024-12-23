@@ -1,0 +1,9 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "parsing.h": "c",
+        "type_traits": "c",
+        "libft.h": "c",
+        "readline.h": "c"
+    }
+}
