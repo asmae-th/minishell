@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 02:52:17 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/22 16:58:55 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/28 13:28:35 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
 
-char	**copie_list_in_array(t_envp *envp)
+char	**copie_list_in_array(t_envp **envp)
 {
 	char	**array;
 	t_envp	*tmp;
@@ -24,7 +23,7 @@ char	**copie_list_in_array(t_envp *envp)
 	if (!envp)
 		return NULL;
 	i = 0;
-	tmp = envp;
+	tmp = *envp;
 	len = size_list(envp);
 	array = malloc(sizeof(char *) * (len + 1));
 	if (!array)
@@ -44,7 +43,7 @@ char	**copie_list_in_array(t_envp *envp)
 	return (array);
 }
 
-void execute_command_simple(char *path, t_final_cmd *cmd, t_envp *envp)
+void	execute_command_simple(char *path, t_final_cmd *cmd, t_envp **envp)
 {
 		pid_t	pid = fork();
 		if (pid == -1) {
@@ -57,10 +56,11 @@ void execute_command_simple(char *path, t_final_cmd *cmd, t_envp *envp)
 		// Appliquer les redirections
 		if (apply_redirections(cmd) == -1)
 		{
-			perror("Redirection failed\n");
+			perror("Redirection failed in commande simple\n");
 			free_arr(env);
 			exit(1);
 		}
+		close_fds(cmd);
 		// Exécuter la commande
 		if (execve(path, cmd->arr, env) == -1) {
 			perror("execve failed");
@@ -122,11 +122,10 @@ char *path_trouvé(t_final_cmd *cmd)
 	return (path);
 }
 
-int	prepare_and_execute(t_envp *envp, t_final_cmd *cmd)
+int	prepare_and_execute(t_envp **envp, t_final_cmd *cmd)
 {
 	char *path;
-	if (builtins(cmd->arr, &envp) == 0) 
-			return (0);
+
 	path = path_trouvé(cmd);
 	if (!path)
 	{
@@ -139,29 +138,31 @@ int	prepare_and_execute(t_envp *envp, t_final_cmd *cmd)
 	return (0);
 }
 
-void	execute_command(t_final_cmd *cmd, t_envp *envp)
+void	execute_command(t_final_cmd *cmd, t_envp **envp)
 {
-	if (cmd->next) //Vérifie si c'est un pipeline
+	if ( cmd && cmd->next == NULL && builtins(cmd, envp) == 0)
+	{
+		printf(" check builtins in execution\n");
+		return ;
+	}
+	if (cmd->next) // Vérifie si c'est un pipeline
 	{
 		printf("pipeline exécuté\n");
 		pipeline(cmd, envp);
 	}
 	else // ou si une commande simple
 	{
-		// printf("commande simple exécuté\n");
+		printf("commande simple exécuté\n");
 		prepare_and_execute(envp, cmd);
 	}
 }
 
-int	execution(t_final_cmd *cmd, char **envp)
+int	execution(t_final_cmd *cmd, t_envp **envp)
 {
-	t_envp *new_env = NULL;
-	if(!cmd)
+	if (!cmd)
 		return (SYNTAX_ERROR);
-	copie_env_list(&new_env, envp);
-	
-	execute_command(cmd, new_env);
-
-	free_list(new_env);
+	execute_command(cmd, envp);
+	// close_fds(cmd);
+	// free_list(new_env);
 	return (0);
 }

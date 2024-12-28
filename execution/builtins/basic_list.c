@@ -6,7 +6,7 @@
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 22:18:06 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/17 00:27:00 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/25 12:27:32 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	plus_egal(char *str)
 {
 	int	i;
 
+	if (!str)
+		return (0);
 	i = 0;
 	while (str[i])
 	{
@@ -36,6 +38,16 @@ int	plus_egal(char *str)
 	return (0);
 }
 
+void	init_struct(t_envp **new_noeud)
+{
+	// Initialisation des champs
+	(*new_noeud)->env = NULL;
+	(*new_noeud)->var = NULL;
+	(*new_noeud)->val = NULL;
+	(*new_noeud)->join = NULL;
+	(*new_noeud)->next = NULL;
+}
+
 t_envp	*create_noeud(char *str)
 {
 	t_envp	*new_noeud;
@@ -44,26 +56,23 @@ t_envp	*create_noeud(char *str)
 	new_noeud = malloc(sizeof(t_envp));
 	if (!new_noeud)
 		return (NULL);
+	init_struct(&new_noeud);
 	indice = egale_indice(str);
 	if (plus_egal(str) == 1)
 	{
 		new_noeud->join = ft_substr(str, 0, indice + 1);
 		new_noeud->var = ft_substr(str, 0, indice - 1);
 		new_noeud->val = ft_substr(str, indice + 1, ft_strlen(str) - indice);
-		new_noeud->next = NULL;
 		return (new_noeud);
-	} //SHLVL=1
+	}
 	if (indice == ft_strlen(str))
 	{
 		new_noeud->var = ft_strdup(str);
-		new_noeud->val = NULL;
-		new_noeud->next = NULL;
 		return (new_noeud);
 	}
 	new_noeud->var = ft_substr(str, 0, indice);
 	new_noeud->val = ft_substr(str, indice + 1, ft_strlen(str) - indice);
 	new_noeud->env = ft_strdup(str); // -> env : pour contient tous le str 
-	new_noeud->next = NULL ;
 	return (new_noeud);
 }
 
@@ -145,13 +154,13 @@ void	copie_env_list(t_envp **env, char **envp)
 	}
 }
 
-int	size_list(t_envp *envp)
+int	size_list(t_envp **envp)
 {
 	int		i;
 	t_envp	*tmp;
 
 	i = 0;
-	tmp = envp;
+	tmp = *envp;
 	while(tmp)
 	{
 		tmp = tmp->next;

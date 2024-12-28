@@ -6,7 +6,7 @@
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 17:29:37 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/15 17:40:05 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/24 23:52:29 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	f_atoi(const char *str)
 int	f_strcmp(char *s1, char *s2)
 {
 	int	i;
-
+	if (!s1 || !s2)
+		return (0);
 	i = 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;

@@ -6,60 +6,11 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 10:11:50 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/23 17:29:40 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:30:27 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
-
-void	print_error(t_token *token)
-{
-	if (token->state == Q_UNCLOSE)
-		write(1, "quotes (\' or \") unclose \n", 25);
-	else if (token->state == RED_ERR)
-		printf("redirections error\n");
-	write(1, "\n", 1);
-}
-
-int	check_red(t_token *token)
-{
-	t_token	*tokens;
-
-	if (token->next)
-	{
-		if (token->type == OUT_REDIR && token->next->type == PIPE)
-			return (OK);
-	}
-	tokens = token->next;
-	while (tokens && tokens->type == A_SPACE)
-		tokens = tokens->next;
-	if (!tokens || (tokens->type != CMD && tokens->type != EXIT_STATUS)
-		|| (!ft_strcmp(tokens->value, "") && tokens->state == NORMAL))
-	{
-		return (ERROR);
-	}
-	return (OK);
-}
-
-t_token	*ft_beffor(t_token *token)
-{
-	t_token	*tmp;
-
-	tmp = token->prev;
-	while (tmp && tmp->type == A_SPACE)
-		tmp = tmp->prev;
-	return (tmp);
-}
-
-t_token	*ft_affter(t_token *token)
-{
-	t_token	*tmp;
-
-	tmp = token->next;
-	while (tmp && tmp->type == A_SPACE)
-		tmp = tmp->next;
-	return (tmp);
-}
 
 int	redir_case(enum e_token_type type)
 {
@@ -99,7 +50,6 @@ int	check_pipe(t_token *token)
 		|| (affter->type != CMD && affter->type != EXIT_STATUS
 			&& !redir_case(affter->type)))
 	{
-		printf("hna kyn errprprr\n");
 		return (ERROR);
 	}
 	return (OK);
@@ -110,13 +60,12 @@ int	ft_syntax(t_token *token)
 	t_token	*tmp;
 
 	tmp = token;
+	if (tmp && tmp->type == PIPE)
+		return (print_error(tmp), ERROR);
 	while (tmp)
 	{
 		if (tmp->type == SYNTAX_ERROR)
-		{
-			print_error(tmp);
-			return (ERROR);
-		}
+			return (print_error(tmp), ERROR);
 		if (tmp->type == OUT_REDIR || tmp->type == IN_REDIR
 			|| tmp->type == APPEND || tmp->type == HERE_DOC)
 		{

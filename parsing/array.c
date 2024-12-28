@@ -1,0 +1,109 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   array.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/28 19:06:32 by atahtouh          #+#    #+#             */
+/*   Updated: 2024/12/28 20:34:21 by atahtouh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/parsing.h"
+
+int	fd_open(t_tmp_cmd *cmd)
+{
+	int	fd;
+
+	fd = 1;
+	if (cmd->f_type == OUT_FILE)
+		fd = open(cmd->value, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	else if (cmd->f_type == APPEND_FILE)
+		fd = open(cmd->value, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	return (fd);
+}
+
+t_in_out	check_fd(t_tmp_cmd **cmd)
+{
+	t_in_out	fd;
+	t_tmp_cmd	*current;
+
+	current = *cmd;
+	fd.fd_in = STDIN_FILENO;
+	fd.fd_out = STDOUT_FILENO;
+	// fd.file_name = NULL;
+	while (current && current->type != PIPE)
+	{
+		if (current->v_type == TFILE)
+		{
+			if (current->f_type == OUT_FILE || current->f_type == APPEND_FILE)
+			{
+				if (fd.fd_out != 1)
+					close(fd.fd_out);
+				fd.fd_out = fd_open(current);
+			}
+			else// if (current->f_type == IN_FILE )
+			{
+				// if (fd.file_name)
+				// 	free(fd.file_name);
+				// Duplicate current->value to avoid dangling pointers
+				// if (current->value)
+				// 	fd.file_name = strdup(current->value);
+				// else
+				// 	fd.file_name = NULL; // Handle case where value is NULL
+				fd.fd_in = open(current->value, O_RDONLY, 0666);
+			}
+			if (fd.fd_in == -1 || fd.fd_out == -1)
+			{
+				write(STDERR_FILENO, "STDERROR", ft_strlen("STDERROR"));
+				return (fd);
+			}
+		}
+		current = current->next;
+	}
+	return (fd);
+}
+
+int	arg_count(t_tmp_cmd **cmd)
+{
+	t_tmp_cmd	*tmp;
+	int			nb_arg;
+
+	tmp = *cmd;
+	nb_arg = 0;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (tmp->v_type == COMMANDE || tmp->v_type == ARG)
+			nb_arg++;
+		tmp = tmp->next;
+	}
+	return (nb_arg);
+}
+
+char	**cmd_array(t_tmp_cmd **cmd)
+{
+	char		**arr;
+	t_tmp_cmd	*tmp;
+	int			i;
+
+	i = 0;
+	arr = malloc((arg_count(cmd) + 1) * sizeof(char *));
+	if (!arr)
+		return (NULL);
+	tmp = *cmd;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (tmp->v_type == COMMANDE || tmp->v_type == ARG)
+		{
+			if (tmp->type == EXIT_STATUS)
+				arr[i] = ft_itoa(ft_setter(255, 0));
+			else
+				arr[i] = ft_strndup(tmp->value, ft_strlen(tmp->value));
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	arr[i] = NULL;
+	return (arr);
+}

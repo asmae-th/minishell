@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmae <asmae@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 10:08:39 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/23 17:05:11 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/26 21:35:39 by asmae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_token	*create_token(char *val, t_token_type type, t_token_state state)
 	new_token->node_member = 0;
 	new_token->next = NULL;
 	new_token->prev = NULL;
-	if (new_token->state == IN_DQUOT)
+	if (new_token->state == IN_DQUOT || new_token->state == IN_SQUOT)
 		new_token->valid = TRUE;
 	else
 		new_token->valid = FALS;
@@ -47,7 +47,7 @@ void	add_token(t_token **token, t_token *new_token)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new_token;
-		tmp->prev = tmp;
+		new_token->prev = tmp;
 	}
 }
 

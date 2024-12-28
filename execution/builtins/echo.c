@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:15:30 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/24 13:25:35 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/24 13:43:12 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_n_option(char *arg)
 {
 	int	i;
 
-	if (arg[0] != '-')
+	if (!arg || arg[0] != '-')
 		return (0);
 	i = 1;
 	while (arg[i])
@@ -28,22 +28,27 @@ int	is_n_option(char *arg)
 	return (1);
 }
 
-void	ft_echo(char **av)
+void	ft_echo(t_final_cmd *cmd)
 {
 	int	i;
 	int	newline;
 
+	// if (!cmd || !cmd->arr[1]) // Vérifie s'il n'y a pas d'arguments
+	// {
+	// 	printf("\n"); // Affiche juste une nouvelle ligne
+	// 	return;
+	// }
 	i = 1;
 	newline = 1;
-	if (av[i] && is_n_option(av[i]))
+	while (cmd->arr[i] && is_n_option(cmd->arr[i]))
 	{
 		newline = 0;
 		i++;
 	}
-	while (av[i])
+	while (cmd->arr[i])
 	{
-		printf("%s", av[i]);
-		if (av[i + 1])
+		printf("%s", cmd->arr[i]);
+		if (cmd->arr[i + 1])
 			printf(" ");
 		i++;
 	}

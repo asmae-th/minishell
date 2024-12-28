@@ -6,33 +6,50 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 11:10:33 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/23 17:18:09 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:24:18 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-char	*ft_single_quote(char *input, t_token **token,
-	t_token_type type, t_token_state state)
+int	extract_squot_content(char *input)
 {
-	int	i;
+	int	j;
 
-	i = 1;
-	while (input[i] && input[i] != '\'')
-		i++;
-	if (input[i] != '\'')
+	j = 0;
+	while (input[j] && input[j] != '\'')
 	{
-		type = SYNTAX_ERROR;
-		state = Q_UNCLOSE;
-		add_token(token, create_token(ft_strdup("ERROR"), type, state));
+		if (input[j + 1] == '\'' && input[j + 2] == '\'')
+			j += 2;
+		j++;
 	}
-	else
+	return (j);
+}
+
+char	*ft_single_quote(char *input, t_token **token,
+		enum e_token_type t_type, enum e_token_state s_token)
+{
+	int	j;
+
+	input++;
+	j = extract_squot_content(input);
+	if (input[j] == 0 || !(*input))
 	{
-		add_token(token, create_token(ft_strndup(input + 1, i - 1),
-				type, state));
-		i++;
+		t_type = SYNTAX_ERROR;
+		s_token = Q_UNCLOSE;
+		if (*input == input[j])
+		{
+			add_token(token,
+				create_token(ft_strndup("SYNTAXE_ERROR",
+						ft_strlen("SYNTAXE_ERROR")), t_type, s_token));
+			return (input + j);
+		}
 	}
-	return (input + i);
+	add_token(token, create_token(ft_strndup(input, j),
+			t_type, s_token));
+	if (input[j] == '\'')
+		j++;
+	return (input + j);
 }
 
 int	content_quote(char **input, t_token **token,
@@ -43,22 +60,21 @@ int	content_quote(char **input, t_token **token,
 	i = 0;
 	while ((*input)[i] && (*input)[i] != '"')
 	{
-		if ((*input)[i] == '$')
+		if ((*input)[i] == '\\' && (*input)[i + 1] == '$')
+		{
+			i += 2;
+			input = input + 1;
+		}
+		else if ((*input)[i] == '$')
 		{
 			if (i)
-			{
 				add_token(token, create_token(ft_strndup((*input), i),
 						type, state));
-			}
 			(*input) = ft_dollar((*input) + i, token, ENV_VAR, state);
 			i = 0;
 		}
 		else
-		{
-			if ((*input)[i + 1] == '"' && (*input)[i + 2] == '"')
-				i += 2;
-			i++;
-		}
+			i = handle_other_cases(input, i);
 	}
 	return (i);
 }
@@ -85,29 +101,6 @@ char	*ft_double_quote(char *input, t_token **token,
 	if (input[i] == '"')
 		i++;
 	return (input + i);
-}
-
-t_token_type	type_is(char c)
-{
-	if (c == '?')
-		return (EXIT_STATUS);
-	else
-		return (SPECIAL_VAR);
-}
-
-int	var_extracter(char *input, int i)
-{
-	while (input[i + 1] && (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
-		i++;
-	return (i);
-}
-
-int	set_i(char *input, int i)
-{
-	if (input[i + 1] && input[i + 1] != '\"'
-		&& input[i + 1] != '\'')
-		i++;
-	return (i);
 }
 
 char	*ft_dollar(char *input, t_token **token,

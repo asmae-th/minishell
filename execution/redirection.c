@@ -6,7 +6,7 @@
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 19:29:37 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/15 21:28:46 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/27 20:31:32 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	apply_redirections(t_final_cmd *redir)
 			close(redir->fd_out);
 			return (-1);
 		}
-		close(redir->fd_out);
 	}
 	// Gérer la redirection de l'entrée standard
 	if (redir->fd_in != STDIN_FILENO)
@@ -34,7 +33,14 @@ int	apply_redirections(t_final_cmd *redir)
 			close(redir->fd_in);
 			return (-1);
 		}
-		close(redir->fd_in);
 	}
 	return (0);
+}
+
+void close_fds(t_final_cmd *cmd)
+{
+	if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out != -1)
+		close(cmd->fd_out);
+	if (cmd->fd_in != STDIN_FILENO && cmd->fd_in != -1)
+		close(cmd->fd_in);
 }
