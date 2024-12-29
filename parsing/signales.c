@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 17:46:54 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/28 20:27:03 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:51:19 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,14 @@ void	ft_delet_herdoc(void)
 {
 	char	*file_name;
 	int		i;
+	char	*itoa;
 
 	i = 0;
 	while (1)
 	{
-		file_name = ft_strjoin("herdoc ", ft_itoa(i));
+		itoa = ft_itoa(i);
+		file_name = ft_strjoin("herdoc ", itoa);
+		free(itoa);
 		if (!file_name)
 			break ;
 		if (unlink(file_name) == -1)

@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 19:17:12 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/28 20:34:07 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 19:56:17 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@ void	signal_herdoc_handler(int heredoc)
 	if (heredoc == SIGINT)
 	{
 		ft_setter(1, 1);
-		if (dup2(STDERR_FILENO, 0) == -1)
-		{
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(1, "\n", 1);
-		}
-		write(1, "\n", 1);
-		close(STDIN_FILENO);
+		// if (dup2(STDERR_FILENO, 0) == -1)
+		// {
+		// 	write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+		// 	write(1, "\n", 1);
+		// }
+		// write(1, "\n", 1);
+		// close(STDIN_FILENO);
+		exit(0);
 	}
 }
 

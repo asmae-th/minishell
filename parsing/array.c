@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 19:06:32 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/28 20:34:21 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 14:30:47 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_in_out	check_fd(t_tmp_cmd **cmd)
 			}
 			if (fd.fd_in == -1 || fd.fd_out == -1)
 			{
-				write(STDERR_FILENO, "STDERROR", ft_strlen("STDERROR"));
+				perror(current->value);
 				return (fd);
 			}
 		}

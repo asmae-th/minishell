@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:37:15 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/29 10:53:45 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 20:00:34 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ int minishell(char **env)
 			final_cmd = ft_organize_cmd(&token,&new_env);
 			execution(final_cmd, &new_env);
 			ft_delet_herdoc();
+			ft_free_final_cmd(&final_cmd);
+			close_file_descriptors(3);
+			
 		}
 		else
 		{

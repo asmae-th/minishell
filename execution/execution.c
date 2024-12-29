@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 02:52:17 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 12:57:04 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:18:51 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,9 @@ char	*path_trouve(t_final_cmd *cmd, t_envp **env)
 {
 	char	*path;
 
-	path = NULL;	
+	if (!cmd || !cmd->arr || !cmd->arr[0])
+		return (NULL);
+	path = NULL;
 	if (cmd->arr[0][0] == '/' || cmd->arr[0][0] == '.')
 		path = cmd->arr[0]; //  aucun allocation ici 
 	else
@@ -177,6 +179,6 @@ int	execution(t_final_cmd *cmd, t_envp **envp)
 		return (SYNTAX_ERROR);
 	execute_command(cmd, envp);
 	// free_list(envp);
-	close_file_descriptors(3);
+	// close_file_descriptors(3);
 	return (0);
 }

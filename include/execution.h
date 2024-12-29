@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 02:52:12 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 12:44:56 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 20:30:47 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_unset(t_envp **envp, t_final_cmd *cmd);
 void	ft_export(t_envp **envp, t_final_cmd *cmd);
 void	update_envp_value(t_envp *tmp, t_envp *new_node);
 void	free_export(t_envp *newNode);
-void	print_export(t_envp *envp);
+void	print_export(t_envp **envp);
 void	add_or_apdate_envp(t_envp **envp, t_envp *new_node);
 void	restaure_redirection(int saved_stdout, int saved_stdin);
 
@@ -72,7 +72,8 @@ void	close_fds(t_final_cmd *cmd);
 void	pipeline(t_final_cmd *cmd, t_envp **envp);
 void	execute_child(t_final_cmd *cmds, t_envp **envp, int prev_fd, int pipe_fd[2]);
 void	close_parent_fds_pipe(int prev_fd, int pipe_fd[2], t_final_cmd *cmds);
-void	wait_all_children(void);
+// void	wait_all_children(void);
+void	wait_all_children(int pid);
 void	handle_error(const char *msg, int exit_code);
 void	handle_cmd_not_found(const char *cmd);
 void	handle_execve_error(char **env);

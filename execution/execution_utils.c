@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 00:47:52 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 12:17:42 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 13:44:26 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ char	**copie_list_in_array(t_envp **envp)
 	{
 		array[i] = ft_strdup(tmp->env);
 		if (!array[i])
-		{
-			free_arr(array);
-			return (NULL);
-		}
+			return (free_arr(array), NULL);
 		tmp = tmp->next;
 		i++;
 	}
