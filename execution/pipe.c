@@ -6,104 +6,11 @@
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:27:20 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/28 13:59:47 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/29 00:39:00 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-
-// void	pipeline(t_final_cmd *cmd, t_envp **envp)
-// {
-// 	int pipe_fd[2]; // Pipe entre deux commandes
-// 	int prev_fd = -1; // Pour stocker pipe_fd[0] de la commande précédente
-// 	int pid;
-// 	t_final_cmd *cmds = cmd;
-
-// 	while (cmds)
-// 	{
-// 		char *path = path_trouvé(cmds);
-// 		// Créer un pipe si ce n'est pas la dernière commande
-// 		if (cmds->next && pipe(pipe_fd) == -1)
-// 		{
-// 			perror("pipe failed");
-// 			if (path != cmds->arr[0]) free(path);
-// 			exit(1);
-// 		}
-// 		// Fork pour la commande actuelle
-// 		pid = fork();
-// 		if (pid == -1)
-// 		{
-// 			perror("fork failed in pipe");
-// 			if (path != cmds->arr[0]) free(path);
-// 			exit(1);
-// 		}
-// 		if (pid == 0) // Processus enfant
-// 		{
-// 			if (!path)
-// 			{
-// 				    char *error_message = cmds->arr[0];
-// 					char *suffix = " :hh commande not found\n";
-// 					// Afficher l'erreur en utilisant write
-// 					write(STDERR_FILENO, error_message, strlen(error_message));
-// 					write(STDERR_FILENO, suffix, strlen(suffix));
-// 					exit(127); // Code standard pour "commande non trouvée"
-// 			}
-// 			// Lire depuis le pipe précédent
-// 			if (prev_fd != -1)
-// 			{
-// 				dup2(prev_fd, STDIN_FILENO);
-// 				close(prev_fd);
-// 			}
-// 			// Écrire dans le prochain pipe (si ce n'est pas la dernière commande)
-// 			if (cmds->next)
-// 			{
-// 				dup2(pipe_fd[1], STDOUT_FILENO);
-// 				close(pipe_fd[1]);
-// 			}
-// 			// Fermer les descripteurs inutilisés
-// 			close(pipe_fd[0]);
-	
-// 			// Appliquer les redirections si définies
-// 			if (apply_redirections(cmds) == -1)
-// 			{
-// 				perror("Redirection failed in pipe\n");
-// 				if (path != cmds->arr[0]) free(path);
-// 				exit(1);
-// 			}
-// 			printf("check after builtins\n");
-// 			if (builtins(cmds, envp) == 0)
-// 			{
-// 				printf("in builtins\n");
-// 				exit(0);
-// 			}
-// 			close_fds(cmds);
-			
-//             // Exécuter la commande
-// 			char **env = copie_list_in_array(envp);
-//             if (execve(path, cmds->arr, env) == -1)
-//             {
-// 				perror("execve failed");
-// 				free_arr(env);
-// 				if (path != cmds->arr[0]) free(path);
-//                 exit(1);
-//             }
-//         }
-// 		if (path != cmds->arr[0])
-// 			free(path);
-//         // Fermer les descripteurs inutilisés dans le processus parent
-//         if (prev_fd != -1)
-//             close(prev_fd);
-
-//         if (cmds->next)
-//             close(pipe_fd[1]);
-
-//         prev_fd = pipe_fd[0];
-//         cmds = cmds->next;
-//     }
-//     // Attendre tous les processus enfants
-//     while (wait(NULL) > 0)
-// 		;
-// }
 
 void pipeline(t_final_cmd *cmd, t_envp **envp)
 {
@@ -123,7 +30,7 @@ void pipeline(t_final_cmd *cmd, t_envp **envp)
         pid = fork();
         if (pid == -1)
         {
-            perror("fork failed in pipe");
+            perror("fork");
             exit(1);
         }
 
@@ -167,7 +74,6 @@ void pipeline(t_final_cmd *cmd, t_envp **envp)
             free_arr(env);
             exit(1);
         }
-
         // Gérer les descripteurs dans le parent
         if (prev_fd != -1)
             close(prev_fd);
@@ -179,5 +85,73 @@ void pipeline(t_final_cmd *cmd, t_envp **envp)
 
     // Attendre tous les enfants
     while (wait(NULL) > 0)
-        ;
+		;
 }
+
+// void	pipeline(t_final_cmd *cmd, t_envp **envp)
+// {
+// 	int			pipe_fd[2];
+// 	int			prev_fd;
+// 	int			pid;
+// 	t_final_cmd	*cmds;
+
+// 	prev_fd = -1;
+// 	cmds = cmd;
+// 	while (cmds)
+// 	{
+// 		if (cmds->next && pipe(pipe_fd) == -1)
+// 			handle_error("pipe failed", 1);
+// 		pid = fork();
+// 		if (pid == -1)
+// 			handle_error("fork failed in pipe", 1);
+// 		if (pid == 0)
+// 			execute_child(cmds, envp, prev_fd, pipe_fd);
+// 		close_parent_fds_pipe(prev_fd, pipe_fd, cmds);
+// 		prev_fd = pipe_fd[0];
+// 		cmds = cmds->next;
+// 	}
+// 	wait_all_children();
+// }
+
+// void	execute_child(t_final_cmd *cmds, t_envp **envp, int prev_fd, int pipe_fd[2])
+// {
+// 	char	*path;
+// 	char	**env;
+
+// 	if (prev_fd != -1)
+// 	{
+// 		dup2(prev_fd, STDIN_FILENO);
+// 		close(prev_fd);
+// 	}
+// 	if (cmds->next)
+// 	{
+// 		dup2(pipe_fd[1], STDOUT_FILENO);
+// 		close(pipe_fd[1]);
+// 	}
+// 	close(pipe_fd[0]);
+// 	if (apply_redirections(cmds) == -1)
+// 		handle_error("Redirection failed in pipeline", 1);
+// 	close_fds(cmds);
+// 	if (builtins(cmds, envp) == 0)
+// 		exit(0);
+// 	path = path_trouvé(cmds);
+// 	if (!path)
+// 		handle_cmd_not_found(cmds->arr[0]);
+// 	env = copie_list_in_array(envp);
+// 	execve(path, cmds->arr, env);
+// 	handle_execve_error(env);
+// }
+
+// void	close_parent_fds_pipe(int prev_fd, int pipe_fd[2], t_final_cmd *cmds)
+// {
+// 	if (prev_fd != -1)
+// 		close(prev_fd);
+// 	if (cmds->next)
+// 		close(pipe_fd[1]);
+// }
+
+// void	wait_all_children(void)
+// {
+// 	while (wait(NULL) > 0)
+// 		;
+// }

@@ -6,7 +6,7 @@
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:15:30 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/24 13:43:12 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:26:39 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void	ft_echo(t_final_cmd *cmd)
 	int	i;
 	int	newline;
 
-	// if (!cmd || !cmd->arr[1]) // Vérifie s'il n'y a pas d'arguments
-	// {
-	// 	printf("\n"); // Affiche juste une nouvelle ligne
-	// 	return;
-	// }
+	if (!cmd || !cmd->arr[1]) // Vérifie s'il n'y a pas d'arguments
+	{
+		write(1, "\n", 1); // Affiche juste une nouvelle ligne
+		return ;
+	}
 	i = 1;
 	newline = 1;
 	while (cmd->arr[i] && is_n_option(cmd->arr[i]))

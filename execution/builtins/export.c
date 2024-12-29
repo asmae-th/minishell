@@ -6,11 +6,17 @@
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 22:33:03 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/25 10:45:41 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:47:28 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
+
+void	update_envp_value(t_envp *tmp, t_envp *new_node)
+{
+	free(tmp->val);
+	tmp->val = ft_strdup(new_node->val);
+}
 
 void	add_or_apdate_envp(t_envp **envp, t_envp *new_node)
 {
@@ -30,15 +36,8 @@ void	add_or_apdate_envp(t_envp **envp, t_envp *new_node)
 				free(new_node->join);
 			}
 			else
-			{
-				free(tmp->val);
-				tmp->val = ft_strdup(new_node->val);
-			}
-			free(new_node->var);
-			free(new_node->val);
-			if (new_node->env)
-				free(new_node->env);
-			free(new_node);
+				update_envp_value(tmp, new_node);
+			free_export(new_node);
 			return ;
 		}
 		tmp = tmp->next;
@@ -48,7 +47,7 @@ void	add_or_apdate_envp(t_envp **envp, t_envp *new_node)
 
 void	print_export(t_envp *envp)
 {
-	t_envp *tmp;
+	t_envp	*tmp;
 
 	tmp = envp;
 	while (tmp)
@@ -63,34 +62,36 @@ void	print_export(t_envp *envp)
 
 void	ft_export(t_envp **envp, t_final_cmd *cmd)
 {
-	t_envp *newNode;
-	int	i;
+	t_envp	*newnode;
+	int		i;
 
 	i = 1;
 	if (!cmd->arr[1])
-	{
-		print_export(*envp);
-		return ;
-	}
+		return (print_export(*envp));
 	while (cmd->arr[i])
 	{
-		newNode = create_noeud(cmd->arr[i]);
-		if (!newNode) // Vérifier l'allocation
+		newnode = create_noeud(cmd->arr[i]);
+		if (!newnode)
 		{
 			perror("export: allocation error");
 			return ;
 		}
-		if (f_isalpha(newNode->var))
+		if (f_isalpha(newnode->var))
 		{
 			printf("export: `%s`: not a valid identifier\n", cmd->arr[i]);
-			free(newNode->var);
-			free(newNode->val);
-			if (newNode->env)
-				free(newNode->env);
-			free(newNode);
+			free_export(newnode);
 		}
 		else
-			add_or_apdate_envp(envp, newNode);
-		i++;		
+			add_or_apdate_envp(envp, newnode);
+		i++;
 	}
+}
+
+void	free_export(t_envp *newnode)
+{
+	free(newnode->var);
+	free(newnode->val);
+	if (newnode->env)
+		free(newnode->env);
+	free(newnode);
 }

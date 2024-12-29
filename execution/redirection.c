@@ -6,7 +6,7 @@
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 19:29:37 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/27 20:31:32 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/29 00:58:45 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	apply_redirections(t_final_cmd *redir)
 {
-	// Gérer la redirection de la sortie standard
 	if (redir->fd_out != STDOUT_FILENO)
 	{
+		if (redir->fd_out == -1)
+			return (-1);
 		if (dup2(redir->fd_out, STDOUT_FILENO) == -1)
 		{
 			perror("dup2 failed for fd_out");
@@ -24,10 +25,11 @@ int	apply_redirections(t_final_cmd *redir)
 			return (-1);
 		}
 	}
-	// Gérer la redirection de l'entrée standard
 	if (redir->fd_in != STDIN_FILENO)
 	{
-		if(dup2(redir->fd_in, STDIN_FILENO) == -1)
+		if (redir->fd_in == -1)
+			return (-1);
+		if (dup2(redir->fd_in, STDIN_FILENO) == -1)
 		{
 			perror("dup2 failed for fd_in");
 			close(redir->fd_in);
@@ -37,7 +39,7 @@ int	apply_redirections(t_final_cmd *redir)
 	return (0);
 }
 
-void close_fds(t_final_cmd *cmd)
+void	close_fds(t_final_cmd *cmd)
 {
 	if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out != -1)
 		close(cmd->fd_out);

@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   pipe_handle_error.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 22:33:12 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/28 23:28:26 by feljourb         ###   ########.fr       */
+/*   Created: 2024/12/29 00:30:21 by feljourb          #+#    #+#             */
+/*   Updated: 2024/12/29 00:31:52 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h"
+#include "../include/execution.h"
 
-void	ft_envp(t_envp **envp)
+void	handle_error(const char *msg, int exit_code)
 {
-	t_envp	*tmp;
+	perror(msg);
+	exit(exit_code);
+}
 
-	tmp = *envp;
-	while (tmp)
-	{
-		if (tmp->var && tmp->val)
-			printf("%s=%s\n", tmp->var, tmp->val);
-		tmp = tmp->next;
-	}
+void	handle_cmd_not_found(const char *cmd)
+{
+	fprintf(stderr, "%s: command not found\n", cmd);
+	exit(127);
+}
+
+void	handle_execve_error(char **env)
+{
+	perror("execve failed");
+	free_arr(env);
+	exit(1);
 }

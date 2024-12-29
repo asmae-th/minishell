@@ -6,7 +6,7 @@
 /*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 22:33:08 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/25 12:17:35 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/29 00:02:07 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,17 @@ void	ft_unset(t_envp **envp, t_final_cmd *cmd)
 	i = 1;
 	while (cmd->arr[i])
 	{
-		//Vérification de la présence du caractère =
-		if (ft_strchr(cmd->arr[i], '='))
+		if (ft_strchr(cmd->arr[i], '='))//Vérification de la présence du caractère =
 		{
 			i++;
-			continue;	
+			continue ;
 		}
 		to_unset = create_noeud(cmd->arr[i]);
-		if(!to_unset)
+		if (!to_unset)
 		{
 			write(2, "unset: allocation error\n", 24);
 			i++;
-			continue;
+			continue ;
 		}
 		delete_noeud(envp, to_unset);
 		free(to_unset->var);
