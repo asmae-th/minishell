@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:27:20 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 00:39:00 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/29 12:44:51 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,77 +14,77 @@
 
 void pipeline(t_final_cmd *cmd, t_envp **envp)
 {
-    int pipe_fd[2];
-    int prev_fd = -1;
-    int pid;
-    t_final_cmd *cmds = cmd;
+	int pipe_fd[2];
+	int prev_fd = -1;
+	int pid;
+	t_final_cmd *cmds = cmd;
 
-    while (cmds)
-    {
-        if (cmds->next && pipe(pipe_fd) == -1)
-        {
-            perror("pipe failed");
-            exit(1);
-        }
+	while (cmds)
+	{
+		if (cmds->next && pipe(pipe_fd) == -1)
+		{
+			perror("pipe failed");
+			exit(1);
+		}
 
-        pid = fork();
-        if (pid == -1)
-        {
-            perror("fork");
-            exit(1);
-        }
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(1);
+		}
 
-        if (pid == 0) // Processus enfant
-        {
-            if (prev_fd != -1)
-            {
-                dup2(prev_fd, STDIN_FILENO);
-                close(prev_fd);
-            }
-            if (cmds->next)
-            {
-                dup2(pipe_fd[1], STDOUT_FILENO);
-                close(pipe_fd[1]);
-            }
-            close(pipe_fd[0]);
+		if (pid == 0) // Processus enfant
+		{
+			if (prev_fd != -1)
+			{
+				dup2(prev_fd, STDIN_FILENO);
+				close(prev_fd);
+			}
+			if (cmds->next)
+			{
+				dup2(pipe_fd[1], STDOUT_FILENO);
+				close(pipe_fd[1]);
+			}
+			close(pipe_fd[0]);
 
-            // Appliquer les redirections
-            if (apply_redirections(cmds) == -1)
-            {
-                perror("Redirection failed in pipeline\n");
-                exit(1);
-            }
+			// Appliquer les redirections
+			if (apply_redirections(cmds) == -1)
+			{
+				perror("Redirection failed in pipeline\n");
+				exit(1);
+			}
 			close_fds(cmds);
-            // Vérifier et exécuter les builtins
-            if (builtins(cmds, envp) == 0)
-            {
-                exit(0);
-            }
+			// Vérifier et exécuter les builtins
+			if (builtins(cmds, envp) == 0)
+			{
+				exit(0);
+			}
 
-            // Exécution normale
-            char *path = path_trouvé(cmds);
-            if (!path)
-            {
-                fprintf(stderr, "%s: command not found\n", cmds->arr[0]);
-                exit(127);
-            }
-            char **env = copie_list_in_array(envp);
-            execve(path, cmds->arr, env);
-            perror("execve failed");
-            free_arr(env);
-            exit(1);
-        }
-        // Gérer les descripteurs dans le parent
-        if (prev_fd != -1)
-            close(prev_fd);
-        if (cmds->next)
-            close(pipe_fd[1]);
-        prev_fd = pipe_fd[0];
-        cmds = cmds->next;
-    }
+			// Exécution normale
+			char *path = path_trouve(cmds, envp);
+			if (!path)
+			{
+				fprintf(stderr, "%s: command not found\n", cmds->arr[0]);
+				exit(127);
+			}
+			char **env = copie_list_in_array(envp);
+			execve(path, cmds->arr, env);
+			perror("execve failed");
+			free_arr(env);
+			exit(1);
+		}
+		// Gérer les descripteurs dans le parent
+		if (prev_fd != -1)
+			close(prev_fd);
+		if (cmds->next)
+			close(pipe_fd[1]);
+		prev_fd = pipe_fd[0];
+		cmds = cmds->next;
+	}
 
-    // Attendre tous les enfants
-    while (wait(NULL) > 0)
+	// Attendre tous les enfants
+	while (wait(NULL) > 0)
 		;
 }
 
@@ -134,7 +134,7 @@ void pipeline(t_final_cmd *cmd, t_envp **envp)
 // 	close_fds(cmds);
 // 	if (builtins(cmds, envp) == 0)
 // 		exit(0);
-// 	path = path_trouvé(cmds);
+// 	path = path_trouve(cmds);
 // 	if (!path)
 // 		handle_cmd_not_found(cmds->arr[0]);
 // 	env = copie_list_in_array(envp);

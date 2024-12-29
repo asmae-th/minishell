@@ -14,7 +14,7 @@ SOURCE_FILES =  main.c parsing/lexical.c parsing/new_token.c parsing/quotes.c\
 				execution/builtins/basic_list.c execution/builtins/builtins.c execution/builtins/cd.c execution/builtins/echo.c \
 				execution/builtins/env.c execution/builtins/exit.c execution/builtins/export.c execution/builtins/pwd.c \
 				execution/builtins/unset.c execution/utils.c execution/builtins/basic_list_1.c execution/builtins/basic_list_2.c \
-				execution/execution_utils.c
+				execution/execution_utils.c execution/pipe_handle_error.c
 # HEADER      = include/parsing.h
 LIBFT       = libft/libft.a
 OBJECTS     = $(SOURCE_FILES:.c=.o)

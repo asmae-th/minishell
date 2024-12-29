@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 09:16:25 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/28 20:43:35 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 10:41:41 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,14 @@
 # include "../libft/libft.h"
 # include <asm-generic/signal-defs.h>
 # include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 # define OK 0
 # define ERROR 2
 # define SYNTAXE_ERR 2
+# define MAX_FD	1024
 
 typedef struct s_envp
 {
@@ -257,4 +261,5 @@ t_token_type	type_is(char c);
 int				var_extracter(char *input, int i);
 int				set_i(char *input, int i);
 int				handle_other_cases(char **input, int i);
+void			close_file_descriptors(int start_fd);
 #endif

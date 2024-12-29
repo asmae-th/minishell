@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 02:52:12 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 01:28:55 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 12:44:56 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ int		f_atoi(const char *str);
 //___________________execution____________________
 void	execute_command_simple(char *path, t_final_cmd *cmd, t_envp **envp);
 void	free_arr(char **arr);
-char	*find_executable(char *cmd);
+char	*find_executable(char *cmd, t_envp **env);
 int		execution(t_final_cmd *cmd, t_envp **envp);
 int		prepare_and_execute(t_envp **envp, t_final_cmd *cmd);
 char	**copie_list_in_array(t_envp **envp);
-char	*path_trouvé(t_final_cmd *cmd);
-
+char	*path_trouve(t_final_cmd *cmd, t_envp **env);
+char	*get_path(t_envp **env);
 //____________________redirections_&_pipe_____________________
 int		apply_redirections(t_final_cmd *redir);
 void	close_fds(t_final_cmd *cmd);

@@ -4,6 +4,7 @@
         "parsing.h": "c",
         "type_traits": "c",
         "libft.h": "c",
-        "readline.h": "c"
+        "readline.h": "c",
+        "execution.h": "c"
     }
 }

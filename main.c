@@ -6,28 +6,30 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:37:15 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/28 15:32:25 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/29 10:53:45 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
-#include "include/execution.h" //u zedt hada bach tkhedmi b execution 
+#include "include/execution.h"
 
+void close_file_descriptors(int start_fd)
+{
+    struct stat fd_stat;
+	int	fd;
 
-
-
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define YELLOW "\033[33m"
-#define BLUE "\033[91m"
-#define MAGENTA "\033[35m"
-#define CYAN "\033[38;5;213m"
-#define RESET "\033[0m"
-
+	while (start_fd < MAX_FD )
+	{
+		fd = start_fd;
+		if(fstat(fd, &fd_stat) == 0)
+			close(fd);
+		start_fd++;
+	}
+}
 void display_cat_icon()
 {
 
-    printf(CYAN "           WELCOME TO OUR SHELL 😊   \n" RESET);
+    printf("\033[38;5;213m           WELCOME TO OUR SHELL 😊   \n\033[0m");
 }
 
 void print_string(char **str)
@@ -48,18 +50,14 @@ void print_string(char **str)
 }
 
 
-int main(int ac, char **av, char **env)
+int minishell(char **env)
 {
-	(void)ac;
-	(void)av;
-	char *input;
-	t_token *token;
+	char		*input;
+	t_token		*token;
 	t_final_cmd	*final_cmd;
+	t_envp		*new_env;
 	
 	input = NULL;
-	t_envp *new_env;
-	display_cat_icon();
-	ft_setter(0, 1);
 	new_env = NULL;
 	copie_env_list(&new_env, env);
 	ft_signal();
@@ -75,29 +73,12 @@ int main(int ac, char **av, char **env)
 			exit(0);
 		}
 		add_history(input);
-			// printf("hi\n");
 		token = analyse_lexical(input, &new_env);
-		
-		// printf("valuuuuuuuuu ::: %s\n",token->value);
-		
 		if(ft_syntax(token) == OK)
 		{
-			
-			
 			final_cmd = ft_organize_cmd(&token,&new_env);
-			// print_string(final_cmd->arr);
-			// ft_free_final_cmd(&final_cmd);
-			// (void)final_cmd;
-			// printf("file name = %s\n",final_cmd->file_name);
-			execution(final_cmd, &new_env); //rani zedt lik gha had star
-			// printf("ccccccc\n");
+			execution(final_cmd, &new_env);
 			ft_delet_herdoc();
-			// t_token	*tmp = token;
-			// while (tmp)
-			// {
-			// 		printf("%d\n",tmp->state);
-			// 		tmp = tmp->next;
-			// }
 		}
 		else
 		{
@@ -108,5 +89,14 @@ int main(int ac, char **av, char **env)
 	clear_history();
 	ft_free_token(&token);
 	free_list(new_env);
+	ft_free_final_cmd(&final_cmd);
 	return(0);
+}
+int main(int ac, char **av, char **env)
+{
+	(void)ac;
+	(void)av;
+	display_cat_icon();
+	ft_setter(0, 1);
+	minishell(env);
 }

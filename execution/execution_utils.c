@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 00:47:52 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 01:14:52 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/29 12:17:42 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,27 @@ void	free_arr(char **arr)
 		free(arr[i++]);
 	free(arr);
 }
-
-char	*find_executable(char *cmd)
+char *get_path(t_envp **env)
 {
-	char *path = getenv("PATH");
+	t_envp *tmp;
+	char *path;
+	
+	tmp = *env;
+	while (tmp)
+	{
+		if(ft_strcmp(tmp->var, "PATH") == 0)
+		{
+			path = tmp->val;
+			return (path);
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+char	*find_executable(char *cmd, t_envp **env)
+{
+	char *path = get_path(env);
 	if (!path)
 		return (NULL);
 	char **directories = ft_split(path, ':');
