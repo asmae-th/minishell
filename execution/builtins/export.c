@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 22:33:03 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 20:34:42 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:26:18 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	bubble_sort(char **array)
 		i++;
 	}
 }
+
 void	print_export(t_envp **envp)
 {
 	char	**array;
@@ -107,35 +108,28 @@ void	print_export(t_envp **envp)
 	free_arr(array);
 }
 
-void	ft_export(t_envp **envp, t_final_cmd *cmd)
+int	ft_export(t_envp **envp, t_final_cmd *cmd)
 {
 	t_envp	*newnode;
 	int		i;
 
 	i = 1;
 	if (!cmd->arr[1])
-		return (print_export(envp));
+		return (print_export(envp), OK);
 	while (cmd->arr[i])
 	{
 		newnode = create_noeud(cmd->arr[i]);
 		if (!newnode)
-			return ;
+			return (EXIT_FAILURE);
 		if (f_isalpha(newnode->var))
 		{
 			printf("export: `%s`: not a valid identifier\n", cmd->arr[i]);
 			free_export(newnode);
+			return (EXIT_FAILURE);
 		}
 		else
 			add_or_apdate_envp(envp, newnode);
 		i++;
 	}
-}
-
-void	free_export(t_envp *newnode)
-{
-	free(newnode->var);
-	free(newnode->val);
-	if (newnode->env)
-		free(newnode->env);
-	free(newnode);
+	return (OK);
 }

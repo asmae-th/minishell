@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 18:58:59 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/28 23:58:22 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:03:22 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,21 @@ void	restaure_redirection(int saved_stdout, int saved_stdin)
 int	execute_builtin(t_final_cmd *cmd, t_envp **envp)
 {
 	if (f_strcmp(cmd->arr[0], "echo") == 0)
-		ft_echo(cmd);
+		ft_setter(ft_echo(cmd), 1);
 	else if (f_strcmp(cmd->arr[0], "cd") == 0)
-		ft_cd(cmd, envp);
+		ft_setter(ft_cd(cmd, envp), 1);
 	else if (f_strcmp(cmd->arr[0], "pwd") == 0)
-		ft_pwd();
+		ft_setter(ft_pwd(), 1);
 	else if (f_strcmp(cmd->arr[0], "exit") == 0)
-		ft_exit(cmd);
+		ft_setter(ft_exit(cmd), 1);
 	else if (f_strcmp(cmd->arr[0], "env") == 0)
-		ft_envp(envp);
+		ft_setter(ft_envp(envp, cmd), 1);
 	else if (f_strcmp(cmd->arr[0], "unset") == 0)
-		ft_unset(envp, cmd);
+		ft_setter(ft_unset(envp, cmd), 1);
 	else if (f_strcmp(cmd->arr[0], "export") == 0)
-		ft_export(envp, cmd);
+		ft_setter(ft_export(envp, cmd), 1);
 	else
-		return (1);
+		return (2);
 	return (0);
 }
 
@@ -61,7 +61,7 @@ int	builtins(t_final_cmd *cmd, t_envp **envp)
 	}
 	if (!cmd->arr || !cmd->arr[0])
 		return (1);
-	if (execute_builtin(cmd, envp) == 1)
+	if (execute_builtin(cmd, envp) == 2)
 	{
 		restaure_redirection(saved_stdout, saved_stdin);
 		return (1);

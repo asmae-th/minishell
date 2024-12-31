@@ -3,16 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 22:33:08 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 00:02:07 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:14:23 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
 
-void	ft_unset(t_envp **envp, t_final_cmd *cmd)
+void	free_unset(t_envp *to_unset)
+{
+	free(to_unset->var);
+	free(to_unset->val);
+	free(to_unset->env);
+	free(to_unset);
+}
+
+int	ft_unset(t_envp **envp, t_final_cmd *cmd)
 {
 	t_envp	*to_unset;
 	int		i;
@@ -20,7 +28,7 @@ void	ft_unset(t_envp **envp, t_final_cmd *cmd)
 	i = 1;
 	while (cmd->arr[i])
 	{
-		if (ft_strchr(cmd->arr[i], '='))//Vérification de la présence du caractère =
+		if (ft_strchr(cmd->arr[i], '='))
 		{
 			i++;
 			continue ;
@@ -33,10 +41,8 @@ void	ft_unset(t_envp **envp, t_final_cmd *cmd)
 			continue ;
 		}
 		delete_noeud(envp, to_unset);
-		free(to_unset->var);
-		free(to_unset->val);
-		free(to_unset->env);
-		free(to_unset);
+		free_unset(to_unset);
 		i++;
 	}
+	return (OK);
 }

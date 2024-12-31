@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 10:11:50 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/28 20:30:27 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 14:19:09 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,20 @@ int	ft_syntax(t_token *token)
 		tmp = tmp->next;
 	}
 	return (OK);
+}
+
+int	search_quote(char *value)
+{
+	int	i;
+
+	i = 0;
+	if (!value)
+		return (0);
+	while (value[i])
+	{
+		if (value[i] == '\"' || value[i] == '\'')
+			return (1);
+		i++;
+	}
+	return (0);
 }

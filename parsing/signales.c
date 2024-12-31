@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 17:46:54 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/29 18:51:19 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 14:18:21 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,15 @@ int	ft_setter(int code, int mode)
 	return (exit_status);
 }
 
-void	ft_signal_heredoc(void)
+void	signal_handler(int status)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = signal_herdoc_handler;
-	sa.sa_flags = SA_RESTART;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	signal_handler(int signum)
-{
-	if (signum == SIGINT)
+	if (status == SIGINT && waitpid(-1, NULL, 0) == -1)
 	{
-		write(1, "\n", 1);
+		ft_setter(130, 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
+		write(1, "\n", 1);
+		rl_redisplay();
 	}
 }
 

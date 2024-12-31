@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 19:06:32 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/29 14:30:47 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 13:49:28 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_in_out	check_fd(t_tmp_cmd **cmd)
 	current = *cmd;
 	fd.fd_in = STDIN_FILENO;
 	fd.fd_out = STDOUT_FILENO;
-	// fd.file_name = NULL;
 	while (current && current->type != PIPE)
 	{
 		if (current->v_type == TFILE)
@@ -43,22 +42,10 @@ t_in_out	check_fd(t_tmp_cmd **cmd)
 					close(fd.fd_out);
 				fd.fd_out = fd_open(current);
 			}
-			else// if (current->f_type == IN_FILE )
-			{
-				// if (fd.file_name)
-				// 	free(fd.file_name);
-				// Duplicate current->value to avoid dangling pointers
-				// if (current->value)
-				// 	fd.file_name = strdup(current->value);
-				// else
-				// 	fd.file_name = NULL; // Handle case where value is NULL
+			else
 				fd.fd_in = open(current->value, O_RDONLY, 0666);
-			}
 			if (fd.fd_in == -1 || fd.fd_out == -1)
-			{
-				perror(current->value);
-				return (fd);
-			}
+				return (perror(current->value), fd);
 		}
 		current = current->next;
 	}

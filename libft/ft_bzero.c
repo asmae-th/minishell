@@ -6,11 +6,11 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 20:33:59 by atahtouh          #+#    #+#             */
-/*   Updated: 2023/11/21 09:10:22 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:29:12 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "libft.h"
 
 void	ft_bzero(void *s, size_t n)
 {

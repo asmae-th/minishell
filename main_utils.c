@@ -1,33 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 13:43:35 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/31 15:30:29 by atahtouh         ###   ########.fr       */
+/*   Created: 2024/12/31 13:36:07 by atahtouh          #+#    #+#             */
+/*   Updated: 2024/12/31 13:44:57 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "include/parsing.h"
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+void	close_file_descriptors(int start_fd)
 {
-	char	*c;
-	int		i;
+	struct stat	fd_stat;
+	int			fd;
 
-	i = 0;
-	c = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
-	if (!c)
+	while (start_fd < MAX_FD)
 	{
-		return (NULL);
+		fd = start_fd;
+		if (fstat(fd, &fd_stat) == 0)
+			close(fd);
+		start_fd++;
 	}
-	while (s[i] != '\0')
+}
+
+void	history(char *str, size_t i, size_t len, int *state)
+{
+	*state = 0;
+	if (i >= len || *state == 1)
+		return ;
+	if (str[i] == '\t')
+		history(str, i + 1, len, state);
+	else
 	{
-		c[i] = f(i, s[i]);
-		i++;
+		*state = 1;
+		return ;
 	}
-	c[i] = '\0';
-	return (c);
 }

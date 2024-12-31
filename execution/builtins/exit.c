@@ -3,32 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 23:55:15 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/28 23:29:50 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:13:19 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
 
-void	ft_exit(t_final_cmd *cmd)
+void	close_std(void)
+{
+	close_file_descriptors(3);
+	close(STDERR_FILENO);
+	close(STDOUT_FILENO);
+	close(STDIN_FILENO);
+}
+
+int	ft_exit(t_final_cmd *cmd)
 {
 	int	exit_code;
 
 	printf("exit\n");
 	if (!cmd->arr[1])
+	{
+		ft_free_final_cmd(&cmd);
+		close_std();
 		exit(0);
+	}
 	if (cmd->arr[2])
 	{
 		write(2, "exit: too many arguments\n", 25);
-		return ;
+		return (EXIT_FAILURE);
 	}
 	exit_code = f_atoi(cmd->arr[1]);
 	if (exit_code == 0 && cmd->arr[1][0] != '0')
 	{
 		printf("exit: %s: numeric argument required\n", cmd->arr[1]);
-		exit(255);// 255 Utilisé pour des erreurs non spécifiques ou graves, comme des arguments invalides ou des erreurs internes
+		ft_free_final_cmd(&cmd);
+		close_std();
+		exit(255);
 	}
+	ft_free_final_cmd(&cmd);
+	close_std();
 	exit(exit_code);
 }

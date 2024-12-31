@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:56:00 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/28 19:08:22 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 13:51:24 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_final_cmd	*creat_final_cmd(t_tmp_cmd **cmd)
 	node->arr = cmd_array(cmd);
 	node->fd_in = fd.fd_in;
 	node->fd_out = fd.fd_out;
-	// node->file_name = fd.file_name;
 	node->next = NULL;
 	node->prev = NULL;
 	return (node);

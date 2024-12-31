@@ -6,11 +6,11 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:42:09 by atahtouh          #+#    #+#             */
-/*   Updated: 2023/11/15 15:54:07 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:30:15 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "libft.h"
 
 void	ft_putchar_fd(char c, int fd)
 {

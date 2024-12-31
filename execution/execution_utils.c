@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 00:47:52 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 13:44:26 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 14:50:14 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**copie_list_in_array(t_envp **envp)
 
 void	free_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	if (!arr)
 		return ;
@@ -50,15 +50,16 @@ void	free_arr(char **arr)
 		free(arr[i++]);
 	free(arr);
 }
-char *get_path(t_envp **env)
+
+char	*get_path(t_envp **env)
 {
-	t_envp *tmp;
-	char *path;
-	
+	t_envp	*tmp;
+	char	*path;
+
 	tmp = *env;
 	while (tmp)
 	{
-		if(ft_strcmp(tmp->var, "PATH") == 0)
+		if (ft_strcmp(tmp->var, "PATH") == 0)
 		{
 			path = tmp->val;
 			return (path);
@@ -70,26 +71,29 @@ char *get_path(t_envp **env)
 
 char	*find_executable(char *cmd, t_envp **env)
 {
-	char *path = get_path(env);
+	char	*path;
+	char	*temp_path;
+	char	*full_path;
+	char	**directories;
+	int		i;
+
+	if (ft_strcmp(cmd, "") == 0)
+		return (NULL);
+	path = get_path(env);
 	if (!path)
 		return (NULL);
-	char **directories = ft_split(path, ':');
-	char *full_path = NULL;
-	int 	i = 0;
+	directories = ft_split(path, ':');
+	full_path = NULL;
+	i = 0;
 	while (directories[i])
 	{
 		full_path = ft_strjoin(directories[i], "/");
-		char *temp_path = ft_strjoin(full_path, cmd);
+		temp_path = ft_strjoin(full_path, cmd);
 		free(full_path);
 		if (access(temp_path, X_OK) == 0)
-		{
-			free_arr(directories);
-			return (temp_path);
-		}
+			return (free_arr(directories), temp_path);
 		free(temp_path);
 		i++;
 	}
-	free_arr(directories);
-	return (NULL);
+	return (free_arr(directories), NULL);
 }
-

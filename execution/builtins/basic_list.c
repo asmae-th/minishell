@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 22:18:06 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 17:28:12 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:25:20 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,6 @@ size_t	egale_indice(char *str)
 	return (i);
 }
 
-int	plus_egal(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '+' && str[i + 1] == '=')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 void	init_struct(t_envp **new_noeud)
 {
 	(*new_noeud)->env = NULL;
@@ -45,6 +29,13 @@ void	init_struct(t_envp **new_noeud)
 	(*new_noeud)->val = NULL;
 	(*new_noeud)->join = NULL;
 	(*new_noeud)->next = NULL;
+}
+
+void	set_var_val_env(t_envp *new_noeud, char *str, size_t indice)
+{
+	new_noeud->var = ft_substr(str, 0, indice);
+	new_noeud->val = ft_substr(str, indice + 1, ft_strlen(str) - indice);
+	new_noeud->env = ft_strdup(str);
 }
 
 t_envp	*create_noeud(char *str)
@@ -62,16 +53,16 @@ t_envp	*create_noeud(char *str)
 		new_noeud->join = ft_substr(str, 0, indice + 1);
 		new_noeud->var = ft_substr(str, 0, indice - 1);
 		new_noeud->val = ft_substr(str, indice + 1, ft_strlen(str) - indice);
+		new_noeud->env = ft_strdup(str);
 		return (new_noeud);
 	}
 	if (indice == ft_strlen(str))
 	{
 		new_noeud->var = ft_strdup(str);
+		new_noeud->env = ft_strdup(str);
 		return (new_noeud);
 	}
-	new_noeud->var = ft_substr(str, 0, indice);
-	new_noeud->val = ft_substr(str, indice + 1, ft_strlen(str) - indice);
-	new_noeud->env = ft_strdup(str);
+	set_var_val_env(new_noeud, str, indice);
 	return (new_noeud);
 }
 

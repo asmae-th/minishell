@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 09:10:23 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/28 19:06:10 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 12:29:27 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_token	*get_prev(t_token *token)
 char	*ft_remplace_var(char *value, t_envp **env)
 {
 	t_envp	*tmp;
+	char	*result;
 
 	tmp = (*env)->next;
 	while (tmp)
@@ -46,7 +47,8 @@ char	*ft_remplace_var(char *value, t_envp **env)
 		if (!ft_strcmp(value + 1, tmp->var))
 		{
 			free(value);
-			return (ft_strndup(tmp->val, ft_strlen(tmp->val)));
+			result = ft_strndup(tmp->val, ft_strlen(tmp->val));
+			return (result);
 		}
 		tmp = tmp->next;
 	}
@@ -69,7 +71,6 @@ void	ft_expand(t_token **token, t_envp **env)
 				tmp_prev = get_prev(tmp_token);
 				if (tmp_prev->type == HERE_DOC)
 				{
-					printf("salut\n");
 					tmp_token->type = CMD;
 					tmp_token = tmp_token->next;
 					continue ;

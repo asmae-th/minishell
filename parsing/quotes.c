@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 11:10:33 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/28 20:24:18 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 11:29:06 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ char	*ft_single_quote(char *input, t_token **token,
 		if (*input == input[j])
 		{
 			add_token(token,
-				create_token(ft_strndup("SYNTAXE_ERROR",
-						ft_strlen("SYNTAXE_ERROR")), t_type, s_token));
+				create_token(ft_strndup("SQUOTE_ERROR",
+						ft_strlen("SQUOTE_ERROR")), t_type, s_token));
 			return (input + j);
 		}
 	}
@@ -92,8 +92,8 @@ char	*ft_double_quote(char *input, t_token **token,
 		state = Q_UNCLOSE;
 		if (*input == input[i])
 		{
-			add_token(token, create_token(ft_strndup("SYNATAXE_ERROR",
-						ft_strlen("SYNATAXE_ERROR")), type, state));
+			add_token(token, create_token(ft_strndup("DQUOTE_ERROR",
+						ft_strlen("DQUOTE_ERROR")), type, state));
 			return (input + i);
 		}
 	}

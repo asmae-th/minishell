@@ -5,6 +5,7 @@
         "type_traits": "c",
         "libft.h": "c",
         "readline.h": "c",
-        "execution.h": "c"
+        "execution.h": "c",
+        "cstdlib": "c"
     }
 }

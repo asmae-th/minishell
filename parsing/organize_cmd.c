@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:23:39 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/29 15:07:45 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 14:15:02 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ t_final_cmd	*ft_organize_cmd(t_token **token, t_envp **env)
 	delete_redir(&tmp);
 	ft_commande(&tmp);
 	ft_option(&tmp);
-	ft_here_doc(&tmp, env);
+	if (ft_here_doc(&tmp, env) == 404)
+		return (NULL);
+	signal(SIGINT, signal_handler);
 	final_commande(&final_cmd, &tmp);
 	ft_free_token(token);
 	ft_free_t_tmp_cmd(&tmp);
@@ -83,7 +85,6 @@ void	ft_free_final_cmd(t_final_cmd **final)
 			}
 			free(current->arr);
 		}
-		// free(current->file_name);
 		free(current);
 		current = tmp;
 	}

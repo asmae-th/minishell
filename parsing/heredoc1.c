@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   heredoc1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/16 10:15:55 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/31 15:28:18 by atahtouh         ###   ########.fr       */
+/*   Created: 2024/12/31 14:19:42 by atahtouh          #+#    #+#             */
+/*   Updated: 2024/12/31 14:24:12 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../include/parsing.h"
 
-t_list	*ft_lstnew(void *content)
+void	here_signal(int heredoc)
 {
-	t_list	*ptr;
+	if (heredoc == SIGINT)
+	{
+		ft_setter(1, 1);
+		if (dup2(STDERR_FILENO, 0) == -1)
+			printf("error\n");
+		write(1, "\n", 1);
+		close(STDIN_FILENO);
+	}
+}
 
-	ptr = (t_list *)malloc(sizeof(t_list));
-	if (ptr == NULL)
-		return (NULL);
-	ptr->content = content;
-	ptr->next = NULL;
-	return (ptr);
+void	ft_printf(char *redline, int line, char *file)
+{
+	if (!redline)
+	{
+		printf("warning: here-document at line %d ", line);
+		printf("delimited by end-of-file (wanted `%s')\n", file);
+	}
 }

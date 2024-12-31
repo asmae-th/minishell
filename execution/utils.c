@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 17:29:37 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/29 01:03:56 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:00:00 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,11 @@ int	f_isalpha(char *str)
 	int	i;
 
 	i = 0;
-	// Erreur si le premier caractère est invalide
 	if (!(str[0] == '_' || (str[0] >= 'a' && str[0] <= 'z')
 			|| (str[0] >= 'A' && str[0] <= 'Z')))
 		return (1);
 	while (str[i])
 	{
-		 // Erreur si un caractère est invalide
 		if (!(str[i] == '_' || (str[i] >= 'a' && str[i] <= 'z')
 				|| (str[i] >= 'A' && str[i] <= 'Z')
 				|| (str[i] >= '0' && str[i] <= '9')))

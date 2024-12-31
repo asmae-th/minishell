@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 20:29:26 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/28 20:48:05 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 14:15:45 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,17 @@
 void	print_error(t_token *token)
 {
 	if (token->state == Q_UNCLOSE)
-		write(1, "quotes (\' or \") unclose \n", 25);
+		write(STDERR_FILENO, "quotes (\' or \") unclose \n", 25);
 	else if (token->state == RED_ERR)
-		printf("redirections error\n");
-	write(1, "bash: erreur de syntaxe près ", 29);
-	write(1, "du symbole inattendu « newline »\n", 32);
+		write(STDERR_FILENO, "redir (<<< or >>> or <>)\n", 25);
+	else
+	{
+		write(STDERR_FILENO, "bash: erreur de syntaxe près ", 29);
+		write(STDERR_FILENO, "du symbole inattendu « ", 25);
+		write(STDERR_FILENO, token->value, ft_strlen(token->value));
+		write(STDERR_FILENO, " » \n", 6);
+		return ;
+	}
 }
 
 int	check_red(t_token *token)

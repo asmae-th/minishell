@@ -6,11 +6,11 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 20:25:16 by atahtouh          #+#    #+#             */
-/*   Updated: 2023/11/15 10:43:00 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:30:22 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "libft.h"
 
 char	*ft_strdup(const char *s)
 {

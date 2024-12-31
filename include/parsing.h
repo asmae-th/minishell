@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 09:16:25 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/29 15:07:27 by atahtouh         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:36:39 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@
 # include "../libft/libft.h"
 # include <asm-generic/signal-defs.h>
 # include <errno.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 # define OK 0
 # define ERROR 2
 # define SYNTAXE_ERR 2
 # define MAX_FD	1024
+# define EXIT_FAILURE 1
 
 typedef struct s_envp
 {
@@ -152,114 +153,120 @@ typedef struct s_in_out
 }	t_in_out;
 
 // Environment Management && expand
-t_env		*ft_env(char **env);
-t_env		*ft_init_env(t_envp**new_env, char **env);
-t_env		*creat_env(char *str);
-void		add_env(t_envp**new_env, t_envp*new_noud);
-int			ft_indice(char *str, char c);
-void		ft_free_env(t_envp**env);
-void		ft_expand(t_token **token, t_envp**env);
-char		*ft_remplace_var(char *value, t_envp**env);
-t_token		*get_prev(t_token *token);
-int			ft_strcmp(char *s1, char *s2);
+t_env			*ft_env(char **env);
+t_env			*ft_init_env(t_envp**new_env, char **env);
+t_env			*creat_env(char *str);
+void			add_env(t_envp**new_env, t_envp*new_noud);
+int				ft_indice(char *str, char c);
+void			ft_free_env(t_envp**env);
+void			ft_expand(t_token **token, t_envp**env);
+char			*ft_remplace_var(char *value, t_envp**env);
+t_token			*get_prev(t_token *token);
+int				ft_strcmp(char *s1, char *s2);
 
 // Lexical Analysis
-t_token		*create_token(char *val, t_token_type type, t_token_state state);
-void		add_token(t_token **token, t_token *new_token);
-void		ft_free_token(t_token **token);
-t_token		*analyse_lexical(char *input, t_envp**env);
-char		*ft_tokenisation(char *input, t_token **token);
+t_token			*create_token(char *val,
+					t_token_type type, t_token_state state);
+void			add_token(t_token **token, t_token *new_token);
+void			ft_free_token(t_token **token);
+t_token			*analyse_lexical(char *input, t_envp**env);
+char			*ft_tokenisation(char *input, t_token **token);
 
 // Token Handling
-char		*ft_cmd(char *input, t_token **token,
-				t_token_type type, t_token_state state);
-char		*ft_pipe(char *input, t_token **token,
-				t_token_type type, t_token_state state);
-char		*ft_space(char *input, t_token **token,
-				t_token_type type, t_token_state state);
-char		*ft_single_quote(char *input, t_token **token,
-				t_token_type t_type, t_token_state s_token);
-char		*ft_double_quote(char *input, t_token **token,
-				t_token_type type, t_token_state state);
-char		*ft_dollar(char *input, t_token **token,
-				t_token_type t_type, t_token_state s_token);
-char		*ft_red_in(char *input, t_token **token,
-				t_token_type type, t_token_state state);
-char		*ft_red_out(char *input, t_token **token,
-				t_token_type type, t_token_state state);
-char		*ft_home(char *input, t_token **token);
-void		more_analyse(t_token **token);
-int			handle_other_cases(char **input, int i);
+char			*ft_cmd(char *input, t_token **token,
+					t_token_type type, t_token_state state);
+char			*ft_pipe(char *input, t_token **token,
+					t_token_type type, t_token_state state);
+char			*ft_space(char *input, t_token **token,
+					t_token_type type, t_token_state state);
+char			*ft_single_quote(char *input, t_token **token,
+					t_token_type t_type, t_token_state s_token);
+char			*ft_double_quote(char *input, t_token **token,
+					t_token_type type, t_token_state state);
+char			*ft_dollar(char *input, t_token **token,
+					t_token_type t_type, t_token_state s_token);
+char			*ft_red_in(char *input, t_token **token,
+					t_token_type type, t_token_state state);
+char			*ft_red_out(char *input, t_token **token,
+					t_token_type type, t_token_state state);
+char			*ft_home(char *input, t_token **token);
+void			more_analyse(t_token **token);
+int				handle_other_cases(char **input, int i);
 // String and Character Functions
-char		*ft_strndup(char *str, int n);
-int			ft_check_caracter(char c);
-int			ft_strcmp(char *s1, char *s2);
-char		*ft_remplace_var(char *value, t_envp**env);
-char		*supr_quote(char *value, t_token_state state);
-int			len_value(char *value, t_token_state state);
-int			search_quote(char *value);
-char		*assemble_data(t_token *begin, int end);
-t_token		*data_assembler(t_token **tokens, t_position *position);
-int			affect_index(t_token **token);
-void		init_holder(t_position **holder, t_token **tokens);
-void		remove_double_quotes(const char *value, char *ptr, int *j);
-t_position	*index_getter(t_token **tokens);
-void		free_region(t_token **start, t_token **end);
+char			*ft_strndup(char *str, int n);
+int				ft_check_caracter(char c);
+int				ft_strcmp(char *s1, char *s2);
+char			*ft_remplace_var(char *value, t_envp**env);
+char			*supr_quote(char *value, t_token_state state);
+int				len_value(char *value, t_token_state state);
+int				search_quote(char *value);
+char			*assemble_data(t_token *begin, int end);
+t_token			*data_assembler(t_token **tokens, t_position *position);
+int				affect_index(t_token **token);
+void			init_holder(t_position **holder, t_token **tokens);
+void			remove_double_quotes(const char *value, char *ptr, int *j);
+t_position		*index_getter(t_token **tokens);
+void			free_region(t_token **start, t_token **end);
 
 // Syntax Checking
-int			ft_syntax(t_token *token);
-void		print_error(t_token *token);
-int			check_red(t_token *token);
-int			check_pipe(t_token *token);
-int			redir_case(enum e_token_type type);
-t_token		*ft_affter(t_token *token);
-t_token		*ft_beffor(t_token *token);
-int			is_outred(t_token *behind, t_token *forward);
+int				ft_syntax(t_token *token);
+void			print_error(t_token *token);
+int				check_red(t_token *token);
+int				check_pipe(t_token *token);
+int				redir_case(enum e_token_type type);
+t_token			*ft_affter(t_token *token);
+t_token			*ft_beffor(t_token *token);
+int				is_outred(t_token *behind, t_token *forward);
 
 // Command Organization
-t_final_cmd	*ft_organize_cmd(t_token **token, t_envp**env);
-void		new_list(t_tmp_cmd **tmp, t_token **token);
-void		add_new_cmd(t_tmp_cmd **cmd, t_tmp_cmd *new_cmd);
-t_tmp_cmd	*creat_new_cmd(char *value, t_token_type type,
-				t_token_state state, t_herdoc valid);
-void		ft_free_t_tmp_cmd(t_tmp_cmd **cmd);
-void		final_commande(t_final_cmd **f_cmd, t_tmp_cmd **cmd);
-t_tmp_cmd	*ft_next(t_tmp_cmd *cmd);
-void		add_final_list(t_final_cmd **cmd, t_final_cmd *next_data);
-t_final_cmd	*creat_final_cmd(t_tmp_cmd **cmd);
-char		**cmd_array(t_tmp_cmd **cmd);
-int			arg_count(t_tmp_cmd **cmd);
-t_in_out	check_fd(t_tmp_cmd **cmd);
-int			fd_open(t_tmp_cmd *cmd);
-void		ft_free_final_cmd(t_final_cmd **final);
-void		red_file(t_tmp_cmd **cmd);
-void		handle_red(t_tmp_cmd **cmd);
-void		delete_redir(t_tmp_cmd **cmd);
+t_final_cmd		*ft_organize_cmd(t_token **token, t_envp**env);
+void			new_list(t_tmp_cmd **tmp, t_token **token);
+void			add_new_cmd(t_tmp_cmd **cmd, t_tmp_cmd *new_cmd);
+t_tmp_cmd		*creat_new_cmd(char *value, t_token_type type,
+					t_token_state state, t_herdoc valid);
+void			ft_free_t_tmp_cmd(t_tmp_cmd **cmd);
+void			final_commande(t_final_cmd **f_cmd, t_tmp_cmd **cmd);
+t_tmp_cmd		*ft_next(t_tmp_cmd *cmd);
+void			add_final_list(t_final_cmd **cmd, t_final_cmd *next_data);
+t_final_cmd		*creat_final_cmd(t_tmp_cmd **cmd);
+char			**cmd_array(t_tmp_cmd **cmd);
+int				arg_count(t_tmp_cmd **cmd);
+t_in_out		check_fd(t_tmp_cmd **cmd);
+int				fd_open(t_tmp_cmd *cmd);
+void			ft_free_final_cmd(t_final_cmd **final);
+void			red_file(t_tmp_cmd **cmd);
+void			handle_red(t_tmp_cmd **cmd);
+void			delete_redir(t_tmp_cmd **cmd);
 
 // Here Document Handling
-void		ft_here_doc(t_tmp_cmd **cmd, t_envp**env);
-char		*heredoc(char *file, int new_name, t_envp**env, t_herdoc valid);
-void		ft_delet_herdoc(void);
+int				ft_here_doc(t_tmp_cmd **cmd, t_envp**env);
+char			*heredoc(char *file, char *new_name,
+					t_envp **env, t_herdoc valid);
+void			ft_delet_herdoc(void);
 
 // Signal Handling
-void		ft_signal(void);
-void		signal_handler(int signum);
-int			ft_setter(int code, int mode);
-void		ft_not_readline(char *readline, int line, char *file);
-char		*ft_write(char *readline, int fd_heredoc);
-int			ft_check_herdoc_quote(t_tmp_cmd **cmd);
-char		*heredoc_expand(char **line, t_envp**env);
-char		*get_env_value(char *var_name, t_envp**env);
-void		ft_signal_heredoc(void);
-void		signal_herdoc_handler(int heredoc);
+void			ft_signal(void);
+void			signal_handler(int signum);
+int				ft_setter(int code, int mode);
+void			ft_not_readline(char *readline, int line, char *file);
+char			*ft_write(char *readline, int fd_heredoc);
+int				ft_check_herdoc_quote(t_tmp_cmd **cmd);
+char			*heredoc_expand(char **line, t_envp**env);
+char			*get_env_value(char *var_name, t_envp**env);
+void			ft_signal_heredoc(void);
+void			signal_herdoc_handler(int heredoc);
 
 // Additional Functions
-int			ft_check_caracter(char c);
-int			true_state(t_token *current);
+int				ft_check_caracter(char c);
+int				true_state(t_token *current);
 // Quotes utils
 t_token_type	type_is(char c);
 int				var_extracter(char *input, int i);
 int				set_i(char *input, int i);
 int				handle_other_cases(char **input, int i);
 void			close_file_descriptors(int start_fd);
+char			*ft_strjoin1(char *s1, char *s2);
+void			history(char *str, size_t i, size_t len, int *state);
+void			here_signal(int heredoc);
+void			ft_printf(char *redline, int line, char *file);
 #endif

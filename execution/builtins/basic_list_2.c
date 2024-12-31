@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   basic_list_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 23:19:51 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/28 23:20:52 by feljourb         ###   ########.fr       */
+/*   Updated: 2024/12/31 15:26:26 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,29 @@ int	size_list(t_envp **envp)
 		i++;
 	}
 	return (i);
+}
+
+int	plus_egal(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '+' && str[i + 1] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	free_export(t_envp *newnode)
+{
+	free(newnode->var);
+	free(newnode->val);
+	if (newnode->env)
+		free(newnode->env);
+	free(newnode);
 }
