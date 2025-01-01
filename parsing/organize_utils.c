@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   organize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmae <asmae@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 20:17:31 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/28 20:18:47 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 10:24:45 by asmae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ void	new_list(t_tmp_cmd **tmp, t_token **token)
 					tmp_token->type, tmp_token->state, tmp_token->valid));
 		tmp_token = tmp_token->next;
 	}
+	// t_tmp_cmd *tmp1 = *tmp;
+	// while (tmp1)
+	// {
+	// 	printf("tmp value : %s\n", tmp1->value);
+	// 	tmp1 = tmp1->next;
+	// }
 }
 
 void	red_file(t_tmp_cmd **cmd)

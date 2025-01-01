@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmae <asmae@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:37:15 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/31 13:43:35 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 11:22:31 by asmae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,22 @@ int	minishell_exit_check(char *input, t_envp *new_env)
 	return (0);
 }
 
+void print_string(char **str)
+{
+    int i = 0;
+
+    if (str == NULL)
+    {
+        printf("Le tableau de chaînes est NULL.\n");
+        return;
+    }
+
+    while (str[i] != NULL)
+    {
+        printf("%s\n", str[i]);
+        i++;
+    }
+}
 int	minishell_loop(t_envp *new_env)
 {
 	char		*input;
@@ -63,6 +79,7 @@ int	minishell_loop(t_envp *new_env)
 		{
 			ft_setter(2, 1);
 			ft_free_token(&token);
+			clear_history();
 		}
 	}
 	return (0);
@@ -70,11 +87,9 @@ int	minishell_loop(t_envp *new_env)
 
 int	minishell(char **env)
 {
-	char	*input;
 	t_envp	*new_env;
 
 	ft_signal();
-	input = NULL;
 	new_env = NULL;
 	copie_env_list(&new_env, env);
 	minishell_loop(new_env);

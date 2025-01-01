@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   organize_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmae <asmae@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:23:39 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/31 14:15:02 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 10:36:18 by asmae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_option(t_tmp_cmd **cmd)
 	while (tmp)
 	{
 		if (tmp->v_type == NONE && (tmp->type == CMD \
-				|| tmp->type == EXIT_STATUS))
+				|| tmp->type == EXIT_STATUS || tmp->type == NEW_TYPE))
 			tmp->v_type = ARG;
 		tmp = tmp->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexical.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmae <asmae@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 22:50:07 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/28 20:03:42 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 10:19:52 by asmae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ t_token	*analyse_lexical(char *input, t_envp **env)
 	}
 	ft_expand(&token, env);
 	more_analyse(&token);
+	// t_token *tmp = token;
+	// while (tmp)
+	// {
+	// 	printf("value : %s\n", tmp->value);
+	// 	tmp = tmp->next;
+	// }
 	free(clear);
 	return (token);
 }
