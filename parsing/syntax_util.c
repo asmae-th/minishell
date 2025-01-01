@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 20:29:26 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/31 14:15:45 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 15:21:35 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	check_red(t_token *token)
 	tokens = token->next;
 	while (tokens && tokens->type == A_SPACE)
 		tokens = tokens->next;
-	if (!tokens || (tokens->type != CMD && tokens->type != EXIT_STATUS)
+	if (!tokens || (tokens->type != CMD
+			&& tokens->type != EXIT_STATUS && tokens->type != NEW_TYPE)
 		|| (!ft_strcmp(tokens->value, "") && tokens->state == NORMAL))
 	{
 		return (ERROR);

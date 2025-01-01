@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 22:33:03 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/31 15:26:18 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 21:59:31 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,55 +47,12 @@ void	add_or_apdate_envp(t_envp **envp, t_envp *new_node)
 		free(new_node->join);
 }
 
-// void	print_export(t_envp *envp)
-// {
-// 	t_envp	*tmp;
-
-// 	tmp = envp;
-// 	while (tmp)
-// 	{
-// 		if (tmp->var)
-// 			printf("declare -x %s=\"%s\"\n", tmp->var, tmp->val);
-// 		else
-// 			printf("declare -x %s\n", tmp->var);
-// 		tmp = tmp->next;
-// 	}
-// }
-
-void	bubble_sort(char **array)
-{
-	int		size;
-	char	*tmp;
-	int		i;
-	int		j;
-
-	size = 0;
-	while (array[size])
-		size++;
-	i = 0;
-	while (i < size - 1)
-	{
-		j = 0;
-		while (j < size - i - 1)
-		{
-			if (ft_strcmp(array[j], array[j + 1]) > 0)
-			{
-				tmp = array[j];
-				array[j] = array[j + 1];
-				array[j + 1] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
 void	print_export(t_envp **envp)
 {
 	char	**array;
 	int		i;
 
-	array = copie_list_in_array(envp);
+	array = array_join(envp);
 	if (!array)
 		return ;
 	bubble_sort(array);

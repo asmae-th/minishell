@@ -10,10 +10,10 @@ SOURCE_FILES =  main.c parsing/lexical.c parsing/new_token.c parsing/quotes.c\
 				parsing/heredoc2.c parsing/array.c parsing/analyse_util.c\
 				parsing/analyse_utils2.c parsing/lexical_utils.c parsing/organize_utils.c\
 				parsing/quotes_utils.c parsing/syntax_util.c main_utils.c\
-				parsing/heredoc1.c\
+				parsing/heredoc1.c parsing/expand_utils.c\
 				execution/execution.c execution/redirection.c execution/pipe.c \
 				execution/builtins/basic_list.c execution/builtins/builtins.c execution/builtins/cd.c execution/builtins/echo.c \
-				execution/builtins/env.c execution/builtins/exit.c execution/builtins/export.c execution/builtins/pwd.c \
+				execution/builtins/env.c execution/builtins/exit.c execution/builtins/export.c execution/builtins/export1.c execution/builtins/pwd.c \
 				execution/builtins/unset.c execution/utils.c execution/builtins/basic_list_1.c execution/builtins/basic_list_2.c \
 				execution/execution_utils.c execution/pipe_handle_error.c execution/execution_util1.c \
 # HEADER      = include/parsing.h

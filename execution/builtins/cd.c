@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:15:48 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/31 15:12:36 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 21:39:47 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ int	ft_cd(t_final_cmd *cmd, t_envp **envp)
 	{
 		path = getenv("HOME");
 		if (!path)
-		{
-			printf("cd: La variable d'environnement HOME n'est pas définie.\n");
-			return (EXIT_FAILURE);
-		}
+			return (printf("cd: La variable d'environnement HOME \
+				n'est pas définie.\n"), EXIT_FAILURE);
 	}
 	else
 		path = cmd->arr[1];
@@ -45,6 +43,9 @@ int	ft_cd(t_final_cmd *cmd, t_envp **envp)
 		return (perror("cd"), EXIT_FAILURE);
 	update_env_pwd(envp, "OLDPWD=", oldpwd);
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		write(1, "cd: error retrieving current directory: getcwd: \
+		cannot access parent directories: No such file or directory\n", 108);
 	update_env_pwd(envp, "PWD=", pwd);
 	free_pwd_oldpwd(oldpwd, pwd);
 	return (OK);

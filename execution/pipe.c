@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:27:20 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/31 14:59:09 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 13:20:04 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	wait_all_children(int last_pid)
 	pid = waitpid(-1, &status, 0);
 	while (pid > 0)
 	{
+		pid = waitpid(-1, &status, 0);
 		if (pid == last_pid)
 		{
 			if (WIFEXITED(status))

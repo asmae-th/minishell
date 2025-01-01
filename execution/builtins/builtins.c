@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 18:58:59 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/31 15:03:22 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 19:49:08 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	execute_builtin(t_final_cmd *cmd, t_envp **envp)
 	else if (f_strcmp(cmd->arr[0], "cd") == 0)
 		ft_setter(ft_cd(cmd, envp), 1);
 	else if (f_strcmp(cmd->arr[0], "pwd") == 0)
-		ft_setter(ft_pwd(), 1);
+		ft_setter(ft_pwd(envp), 1);
 	else if (f_strcmp(cmd->arr[0], "exit") == 0)
 		ft_setter(ft_exit(cmd), 1);
 	else if (f_strcmp(cmd->arr[0], "env") == 0)

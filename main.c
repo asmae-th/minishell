@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmae <asmae@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:37:15 by asmae             #+#    #+#             */
-/*   Updated: 2025/01/01 11:22:31 by asmae            ###   ########.fr       */
+/*   Updated: 2025/01/01 21:43:20 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,6 @@ int	minishell_exit_check(char *input, t_envp *new_env)
 	return (0);
 }
 
-void print_string(char **str)
-{
-    int i = 0;
-
-    if (str == NULL)
-    {
-        printf("Le tableau de chaînes est NULL.\n");
-        return;
-    }
-
-    while (str[i] != NULL)
-    {
-        printf("%s\n", str[i]);
-        i++;
-    }
-}
 int	minishell_loop(t_envp *new_env)
 {
 	char		*input;

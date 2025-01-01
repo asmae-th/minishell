@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:15:58 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/31 15:13:57 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 21:25:39 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,28 @@
 
 #include "../../include/execution.h"
 
-int	ft_pwd(void)
+char	*get_pwd(t_envp **envp)
+{
+	t_envp	*tmp;
+	char	*pwd;
+
+	tmp = *envp;
+	while (tmp)
+	{
+		if (f_strcmp(tmp->var, "PWD") == 0)
+		{
+			pwd = tmp->val;
+			return (pwd);
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+int	ft_pwd(t_envp **envp)
 {
 	char	*cwd;
+	char	*pwd;
 
 	cwd = getcwd(NULL, 0);
 	if (cwd != NULL)
@@ -28,8 +47,12 @@ int	ft_pwd(void)
 	}
 	else
 	{
-		perror("pwd");
-		free(cwd);
+		pwd = get_pwd(envp);
+		if (pwd != NULL)
+		{
+			write(1, pwd, ft_strlen(pwd));
+			write(1, "\n", 1);
+		}
 	}
 	return (EXIT_FAILURE);
 }

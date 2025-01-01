@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 17:46:54 by asmae             #+#    #+#             */
-/*   Updated: 2024/12/31 14:18:21 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 21:41:15 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ int	ft_setter(int code, int mode)
 
 void	signal_handler(int status)
 {
-	if (status == SIGINT && waitpid(-1, NULL, 0) == -1)
+	if (status == SIGINT)
 	{
 		ft_setter(130, 1);
+		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		write(1, "\n", 1);
-		rl_redisplay();
 	}
 }
 

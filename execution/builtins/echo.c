@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:15:30 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/31 15:12:52 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/01 20:08:12 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@ int	is_n_option(char *arg)
 {
 	int	i;
 
-	if (!arg || arg[0] != '-')
-		return (0);
 	i = 1;
-	while (arg[i])
+	if (arg && arg[0] == '-' && arg[1])
 	{
-		if (arg[i] != 'n')
-			return (0);
-		i++;
+		while (arg[i])
+		{
+			if (arg[i] != 'n')
+				return (0);
+			i++;
+		}
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 int	ft_echo(t_final_cmd *cmd)
@@ -47,12 +49,12 @@ int	ft_echo(t_final_cmd *cmd)
 	}
 	while (cmd->arr[i])
 	{
-		printf("%s", cmd->arr[i]);
+		write(1, cmd->arr[i], ft_strlen(cmd->arr[i]));
 		if (cmd->arr[i + 1])
-			printf(" ");
+			write(1, " ", 1);
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		write(1, "\n", 1);
 	return (OK);
 }

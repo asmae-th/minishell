@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmae <asmae@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 09:16:25 by asmae             #+#    #+#             */
-/*   Updated: 2025/01/01 11:01:17 by asmae            ###   ########.fr       */
+/*   Updated: 2025/01/01 15:54:20 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int				ft_indice(char *str, char c);
 void			ft_free_env(t_envp**env);
 void			ft_expand(t_token **token, t_envp**env);
 char			*ft_remplace_var(char *value, t_envp**env);
-// t_token			*get_prev(t_token *token);
+int				get_prev(t_token *token);
 int				ft_strcmp(char *s1, char *s2);
 
 // Lexical Analysis
@@ -271,5 +271,4 @@ char			*ft_strjoin1(char *s1, char *s2);
 void			history(char *str, size_t i, size_t len, int *state);
 void			here_signal(int heredoc);
 void			ft_printf(char *redline, int line, char *file);
-void print_string(char **str);
 #endif
