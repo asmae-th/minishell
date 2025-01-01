@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 09:10:23 by asmae             #+#    #+#             */
-/*   Updated: 2025/01/01 15:39:08 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/02 00:36:50 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,41 +66,41 @@ void	remplace_node(t_token **old_token, char **new_values)
 	}
 }
 
-void	handle_split_and_replace(t_token **token, t_token **tmp_token)
-{
-	char	**ptr;
 
-	if (ft_strchr1((*tmp_token)->value))
+void	ft_check_and_update_prev(t_token **tmp_token)
+{
+	if ((*tmp_token)->prev != NULL)
 	{
-		ptr = ft_split((*tmp_token)->value, ' ');
-		remplace_node(token, ptr);
-		free(ptr);
-		*tmp_token = *token;
+		if (get_prev(*tmp_token))
+		{
+			(*tmp_token)->type = CMD;
+			*tmp_token = (*tmp_token)->next;
+		}
 	}
 }
 
 void	ft_expand(t_token **token, t_envp **env)
 {
 	t_token	*tmp_token;
+	char	**ptr;
 
 	tmp_token = *token;
 	while (tmp_token)
 	{
 		if (tmp_token->type == ENV_VAR || tmp_token->type == SPECIAL_VAR)
 		{
-			if (tmp_token->prev != NULL)
-			{
-				if (get_prev(tmp_token))
-				{
-					tmp_token->type = CMD;
-					tmp_token = tmp_token->next;
-					continue ;
-				}
-			}
-			tmp_token->value = ft_remplace_var(tmp_token->value, env);
-			handle_split_and_replace(token, &tmp_token);
-			if (tmp_token == *token)
+			ft_check_and_update_prev(&tmp_token);
+			if (tmp_token == NULL)
 				continue ;
+			tmp_token->value = ft_remplace_var(tmp_token->value, env);
+			if (ft_strchr1(tmp_token->value))
+			{
+				ptr = ft_split(tmp_token->value, ' ');
+				remplace_node(token, ptr);
+				free(ptr);
+				tmp_token = *token;
+				continue ;
+			}
 			else
 				tmp_token->type = CMD;
 		}

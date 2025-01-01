@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 20:00:46 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/28 20:02:26 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/02 00:37:21 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ char	*ft_strndup(char *str, int n)
 	int		i;
 
 	i = 0;
+	if (!str)
+		return (NULL);
 	ptr = malloc((n + 1) * sizeof(char *));
 	if (!ptr)
 		return (NULL);

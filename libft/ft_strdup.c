@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 20:25:16 by atahtouh          #+#    #+#             */
-/*   Updated: 2024/12/31 15:30:22 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/02 00:38:21 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	dup = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
 	if (!dup)
 		return (NULL);

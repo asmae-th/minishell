@@ -1,5 +1,5 @@
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS      = -Wall -Wextra -Werror -g3 -fsanitize=address
 XFLAGS      = -lreadline -lncurses
 NAME        = minishell
 SOURCE_FILES =  main.c parsing/lexical.c parsing/new_token.c parsing/quotes.c\
