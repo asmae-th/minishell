@@ -55,7 +55,10 @@ t_final_cmd	*ft_organize_cmd(t_token **token, t_envp **env)
 	ft_commande(&tmp);
 	ft_option(&tmp);
 	if (ft_here_doc(&tmp, env) == 404)
+	{
+		ft_free_t_tmp_cmd(&tmp);
 		return (NULL);
+	}
 	signal(SIGINT, signal_handler);
 	final_commande(&final_cmd, &tmp);
 	ft_free_token(token);

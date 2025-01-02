@@ -31,8 +31,7 @@ void	add_or_apdate_envp(t_envp **envp, t_envp *new_node)
 			if (new_node->join && plus_egal(new_node->join) == 1)
 			{
 				str = tmp->val;
-				tmp->val = ft_strjoin(str, new_node->val);
-				free(str);
+				tmp->val = join_strjoin(str, new_node->val);
 				free(new_node->join);
 			}
 			else

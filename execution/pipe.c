@@ -37,17 +37,21 @@ void	pipeline(t_final_cmd *cmd, t_envp **envp)
 	wait_all_children(pid);
 }
 
+void	preve_fd(int prev_fd)
+{
+	dup2(prev_fd, STDIN_FILENO);
+	close(prev_fd);
+}
+
 void	execute_child(t_final_cmd *cmds, t_envp **envp,
 			int prev_fd, int pipe_fd[2])
 {
 	char	*path;
 	char	**env;
 
+	signal(SIGQUIT, SIG_DFL);
 	if (prev_fd != -1)
-	{
-		dup2(prev_fd, STDIN_FILENO);
-		close(prev_fd);
-	}
+		preve_fd(prev_fd);
 	if (cmds->next)
 	{
 		dup2(pipe_fd[1], STDOUT_FILENO);
@@ -55,13 +59,13 @@ void	execute_child(t_final_cmd *cmds, t_envp **envp,
 	}
 	close(pipe_fd[0]);
 	if (apply_redirections(cmds) == -1)
-		handle_error("Redirection failed in pipeline", 1);
+		exit(1);
 	close_file_descriptors(3);
 	if (builtins(cmds, envp) == 0)
-		exit(0);
+		exit_builtins(envp);
 	path = path_trouve(cmds, envp);
 	if (!path)
-		handle_cmd_not_found(cmds->arr[0]);
+		handle_cmd_not_found(cmds->arr[0], envp);
 	env = copie_list_in_array(envp);
 	execve(path, cmds->arr, env);
 	handle_execve_error(env);

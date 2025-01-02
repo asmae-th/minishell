@@ -15,9 +15,9 @@
 void	execute_child_process(char *path, t_final_cmd *cmd,
 			char **env, t_envp **envp)
 {
+	signal(SIGQUIT, SIG_DFL);
 	if (apply_redirections(cmd) == -1)
 	{
-		perror("Redirection failed in simple command");
 		free_arr(env);
 		free_list(*envp);
 		exit(1);

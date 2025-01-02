@@ -29,7 +29,7 @@ int	execute_builtin(t_final_cmd *cmd, t_envp **envp)
 	else if (f_strcmp(cmd->arr[0], "pwd") == 0)
 		ft_setter(ft_pwd(envp), 1);
 	else if (f_strcmp(cmd->arr[0], "exit") == 0)
-		ft_setter(ft_exit(cmd), 1);
+		ft_setter(ft_exit(cmd, envp), 1);
 	else if (f_strcmp(cmd->arr[0], "env") == 0)
 		ft_setter(ft_envp(envp, cmd), 1);
 	else if (f_strcmp(cmd->arr[0], "unset") == 0)
@@ -55,7 +55,6 @@ int	builtins(t_final_cmd *cmd, t_envp **envp)
 	}
 	if (apply_redirections(cmd) == -1)
 	{
-		write(2, "Redirection builtins\n", 21);
 		restaure_redirection(saved_stdout, saved_stdin);
 		return (-1);
 	}

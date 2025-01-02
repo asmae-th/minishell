@@ -40,30 +40,38 @@ void	bubble_sort(char **array)
 	}
 }
 
-int	fill_array(t_envp *tmp, char **array)
+int	handle_array_element(t_envp *tmp, char **array, int i)
 {
 	char	*join1;
-	int		i;
+
+	if (!tmp->val)
+	{
+		array[i] = ft_strdup(tmp->var);
+		if (!array[i])
+			return (free_arr(array), 0);
+	}
+	else
+	{
+		join1 = ft_strjoin(tmp->var, "=");
+		if (!join1)
+			return (free_arr(array), 0);
+		array[i] = ft_strjoin(join1, tmp->val);
+		free(join1);
+		if (!array[i])
+			return (free_arr(array), 0);
+	}
+	return (1);
+}
+
+int	fill_array(t_envp *tmp, char **array)
+{
+	int	i;
 
 	i = 0;
 	while (tmp)
 	{
-		if (!tmp->val)
-		{
-			array[i] = ft_strdup(tmp->var);
-			if (!array[i])
-				return (free_arr(array), 0);
-		}
-		else
-		{
-			join1 = ft_strjoin(tmp->var, "=");
-			if (!join1)
-				return (free_arr(array), 0);
-			array[i] = ft_strjoin(join1, tmp->val);
-			free(join1);
-			if (!array[i])
-				return (free_arr(array), 0);
-		}
+		if (!handle_array_element(tmp, array, i))
+			return (0);
 		tmp = tmp->next;
 		i++;
 	}

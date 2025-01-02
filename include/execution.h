@@ -32,7 +32,7 @@ int			ft_cd(t_final_cmd *cmd, t_envp **envp);
 void		update_env_pwd(t_envp **envp, char *key, char *value);
 void		free_pwd_oldpwd(char *oldpwd, char *pwd);
 int			ft_pwd(t_envp **envp);
-long long	ft_exit(t_final_cmd *cmd);
+long long	ft_exit(t_final_cmd *cmd, t_envp **envp);
 int			ft_envp(t_envp **envp, t_final_cmd *cmd);
 int			ft_unset(t_envp **envp, t_final_cmd *cmd);
 int			ft_export(t_envp **envp, t_final_cmd *cmd);
@@ -49,7 +49,7 @@ void		restaure_redirection(int saved_stdout, int saved_stdin);
 int			f_isalpha(char *str);
 int			f_strcmp(char *s1, char *s2);
 long long	f_atoi(const char *str);
-
+int			f_allpha(char *str);
 //___________________execution____________________
 void		execute_command_simple(char *path, t_final_cmd *cmd, t_envp **envp);
 void		free_arr(char **arr);
@@ -72,9 +72,10 @@ void		close_parent_fds_pipe(int prev_fd,
 // void	wait_all_children(void);
 void		wait_all_children(int pid);
 void		handle_error(const char *msg, int exit_code);
-void		handle_cmd_not_found(const char *cmd);
+void		handle_cmd_not_found(const char *cmd, t_envp **envp);
 void		handle_execve_error(char **env);
 void		close_std(void);
+void		exit_builtins(t_envp **envp);
 
 //__________________basic_list_____________________
 void		copie_env_list(t_envp **env, char **envp);

@@ -36,51 +36,43 @@ int	f_allnum(char *str)
 	return (0);
 }
 
-int	f_allpha(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if ((str[i] >= 65 && str[i] <= 90)
-			|| (str[i] >= 97 && str[i] <= 122))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 void	cleanup_and_close(t_final_cmd **cmd)
 {
 	ft_free_final_cmd(cmd);
 	close_std();
 }
 
-long long	ft_exit(t_final_cmd *cmd)
+void	free_clean_exit(t_final_cmd *cmd, t_envp **envp, int exit_status)
+{
+	cleanup_and_close(&cmd);
+	free_list(*envp);
+	exit(exit_status);
+}
+
+long long	ft_exit(t_final_cmd *cmd, t_envp **envp)
 {
 	long long	exit_code;
 
+	if (!cmd->next)
+		write(1, "exit\n", 5);
 	if (!cmd->arr[1])
-	{
-		cleanup_and_close(&cmd);
-		exit(0);
-	}
+		free_clean_exit(cmd, envp, 0);
 	if (cmd->arr[2] && f_allnum(cmd->arr[1]) && f_allpha(cmd->arr[2]))
 		return (write(2, "exit: too many arguments\n", 25), EXIT_FAILURE);
 	if (cmd->arr[2] && f_allpha(cmd->arr[1]) && f_allnum(cmd->arr[2]))
 	{
 		printf("exit: %s: numeric argument required\n", cmd->arr[1]);
-		exit(2);
+		free_clean_exit(cmd, envp, 2);
 	}
 	exit_code = f_atoi(cmd->arr[1]);
 	if (exit_code == -1)
 	{
 		printf("exit: %s: numeric argument required\n", cmd->arr[1]);
-		cleanup_and_close(&cmd);
-		exit(2);
+		free_clean_exit(cmd, envp, 2);
 	}
+	free_list(*envp);
 	cleanup_and_close(&cmd);
+	rl_clear_history();
 	clear_history();
 	exit(exit_code);
 }

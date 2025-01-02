@@ -63,7 +63,7 @@ int	content_quote(char **input, t_token **token,
 		if ((*input)[i] == '\\' && (*input)[i + 1] == '$')
 		{
 			i += 2;
-			input = input + 1;
+			*input = *input + 1;
 		}
 		else if ((*input)[i] == '$')
 		{

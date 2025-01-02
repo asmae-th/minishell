@@ -85,3 +85,18 @@ int	f_isalpha(char *str)
 	}
 	return (0);
 }
+
+int	f_allpha(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] >= 65 && str[i] <= 90)
+			|| (str[i] >= 97 && str[i] <= 122))
+			return (1);
+		i++;
+	}
+	return (0);
+}

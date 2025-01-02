@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
+#include "../include/execution.h"
 
 int	ft_check_herdoc_quote(t_tmp_cmd **cmd)
 {

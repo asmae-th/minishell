@@ -18,9 +18,10 @@ void	handle_error(const char *msg, int exit_code)
 	exit(exit_code);
 }
 
-void	handle_cmd_not_found(const char *cmd)
+void	handle_cmd_not_found(const char *cmd, t_envp **envp)
 {
 	fprintf(stderr, "%s: command not found\n", cmd);
+	free_list(*envp);
 	exit(127);
 }
 
@@ -29,4 +30,10 @@ void	handle_execve_error(char **env)
 	perror("execve failed");
 	free_arr(env);
 	exit(1);
+}
+
+void	exit_builtins(t_envp **envp)
+{
+	free_list(*envp);
+	exit(0);
 }
