@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 23:15:38 by feljourb          #+#    #+#             */
-/*   Updated: 2025/01/01 15:44:12 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/02 01:55:12 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ void	copie_env_list(t_envp **env, char **envp)
 	int	i;
 
 	i = 0;
-	if (ft_strcmp(envp[0], "PWD=/home/atahtouh/Desktop/minishell2") == 0)
+	if (!envp
+		|| ft_strcmp(envp[0], "PWD=/home/atahtouh/Desktop/minishell2") == 0)
 	{
 		default_env(env);
 		return ;

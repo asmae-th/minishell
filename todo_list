@@ -1,0 +1,3 @@
+run minishell without path >> env -i ./minishell
+
+unset all variables.

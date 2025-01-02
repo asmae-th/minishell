@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 23:19:51 by feljourb          #+#    #+#             */
-/*   Updated: 2025/01/01 21:57:33 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/02 02:21:16 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,9 @@ void	free_export(t_envp *newnode)
 
 void	default_env(t_envp **env)
 {
-	add_noeud(env, create_noeud("PATH=/home/atahtouh/bin:/usr/local/sbin:\
-			/usr/local/bin:/usr/sbin:/usr/bin:/sbin:\
-			/bin:/usr/games:/usr/local/games:/snap/bin"));
 	add_noeud(env, create_noeud("_=/usr/bin/env"));
 	add_noeud(env, create_noeud("OLDPWD"));
-	add_noeud(env, create_noeud("PWD\
-			=/home/atahtouh/Desktop/last_oneeeeeeeeeee"));
+	add_noeud(env,
+		create_noeud("PWD=/home/atahtouh/Desktop/last_oneeeeeeeeeee"));
 	add_noeud(env, create_noeud("SHLVL=1"));
 }

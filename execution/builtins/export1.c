@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 21:58:51 by atahtouh          #+#    #+#             */
-/*   Updated: 2025/01/01 22:02:30 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/02 03:00:43 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	bubble_sort(char **array)
 		j = 0;
 		while (j < size - i - 1)
 		{
-			if (ft_strcmp(array[j], array[j + 1]) > 0)
+			if (f_strcmp(array[j], array[j + 1]) > 0)
 			{
 				tmp = array[j];
 				array[j] = array[j + 1];
@@ -48,13 +48,22 @@ int	fill_array(t_envp *tmp, char **array)
 	i = 0;
 	while (tmp)
 	{
-		join1 = ft_strjoin(tmp->var, "=");
-		if (!join1)
-			return (free_arr(array), 0);
-		array[i] = ft_strjoin(join1, tmp->val);
-		free(join1);
-		if (!array[i])
-			return (free_arr(array), 0);
+		if (!tmp->val)
+		{
+			array[i] = ft_strdup(tmp->var);
+			if (!array[i])
+				return (free_arr(array), 0);
+		}
+		else
+		{
+			join1 = ft_strjoin(tmp->var, "=");
+			if (!join1)
+				return (free_arr(array), 0);
+			array[i] = ft_strjoin(join1, tmp->val);
+			free(join1);
+			if (!array[i])
+				return (free_arr(array), 0);
+		}
 		tmp = tmp->next;
 		i++;
 	}

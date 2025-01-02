@@ -6,7 +6,7 @@
 /*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 09:10:23 by asmae             #+#    #+#             */
-/*   Updated: 2025/01/02 00:36:50 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/02 01:54:24 by atahtouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	remplace_node(t_token **old_token, char **new_values)
 		current = current->next;
 	}
 }
-
 
 void	ft_check_and_update_prev(t_token **tmp_token)
 {
