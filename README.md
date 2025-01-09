@@ -44,11 +44,11 @@ Pour essayer notre Minishell, suivez ces étapes :
 
 2. Compilez le projet avec make :
     ```bash
-    `cd minishell`
-    `make`
+    cd minishell
+    make
 3. Lancez le shell :
     ```bash
-    `./minishell`
+    ./minishell
 
 ## Conclusion
 
