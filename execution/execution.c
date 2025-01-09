@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atahtouh <atahtouh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: feljourb <feljourb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 02:52:17 by feljourb          #+#    #+#             */
-/*   Updated: 2024/12/31 14:52:06 by atahtouh         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:59:23 by feljourb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,9 @@ void	execute_command(t_final_cmd *cmd, t_envp **envp)
 	if (cmd && cmd->next == NULL && builtins(cmd, envp) == 0)
 		return ;
 	if (cmd->next)
-	{
 		pipeline(cmd, envp);
-	}
 	else
-	{
 		prepare_and_execute(envp, cmd);
-	}
 }
 
 int	analyse_cmd(t_final_cmd	*cmd)
